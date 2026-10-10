@@ -1,0 +1,27 @@
+{
+  "source": "requirements-model.txt",
+  "date": "2026-10-10",
+  "scope": "Full transitive versions resolved for Linux x86_64, Python 3.11 and audited with pip-audit. Runtimes are installed separately; this is not a complete license inventory.",
+  "dependencies": [
+    {
+      "name": "flatbuffers",
+      "version": "25.12.19"
+    },
+    {
+      "name": "numpy",
+      "version": "1.26.4"
+    },
+    {
+      "name": "onnxruntime",
+      "version": "1.30.0"
+    },
+    {
+      "name": "packaging",
+      "version": "26.3"
+    },
+    {
+      "name": "protobuf",
+      "version": "7.36.2"
+    }
+  ]
+}

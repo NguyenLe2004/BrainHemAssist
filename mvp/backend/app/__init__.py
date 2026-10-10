@@ -1,0 +1,2 @@
+"""Brain hemorrhage MVP backend."""
+

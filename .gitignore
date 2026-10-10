@@ -1,0 +1,67 @@
+# Local dependencies and generated output
+.DS_Store
+.venv*/
+**/node_modules/
+**/__pycache__/
+**/.pytest_cache/
+**/*.pyc
+**/dist/
+**/build/
+*.egg-info/
+# Local clinical data and runtime state
+data/
+**/data/
+datasets/
+demo/
+artifacts/
+task-evidence/
+backups/
+*.nii
+*.nii.gz
+*.dcm
+*.dicom
+*.npz
+*.npy
+*.sqlite*
+*.db
+*.jsonl
+*.csv
+# Credentials and host-specific settings
+.env*
+!.env.example
+**/secrets/
+operator-secrets/
+*.key
+*.pem
+*.p12
+*.pfx
+*.log
+*.pid
+# All other model and binary artifacts stay private
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.engine
+*.plan
+*.bhm
+*.whl
+*.zip
+*.tar*
+# Agent instructions, internal reports and deferred model documentation
+*.[mM][dD]
+*.[mM][dD][xX]
+*.[mM][aA][rR][kK][dD][oO][wW][nN]
+AGENTS*
+CLAUDE*
+GEMINI*
+.aider*
+.codex/
+.claude/
+private-build/
+releases/
+
+# Deliberately public documentation and the single approved artifact
+!/README.md
+!/models/baseline_s.onnx

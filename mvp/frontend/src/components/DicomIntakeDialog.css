@@ -1,0 +1,56 @@
+.dicom-intake-backdrop { position:fixed; inset:0; z-index:1200; display:grid; place-items:center; padding:24px; background:rgba(3,9,18,.76); backdrop-filter:blur(8px); }
+.dicom-intake { width:min(680px,100%); max-height:calc(100vh - 40px); overflow:auto; border:1px solid #293d59; border-radius:14px; color:#eaf2ff; background:#101b2d; box-shadow:0 30px 90px rgba(0,0,0,.52); }
+.dicom-intake > header { display:flex; align-items:center; gap:12px; padding:20px 22px 17px; border-bottom:1px solid #243650; }
+.intake-title-icon { display:grid; place-items:center; width:40px; height:40px; border:1px solid #2b7082; border-radius:10px; color:#66d4df; background:#123342; }
+.dicom-intake > header div:nth-child(2) { flex:1; }
+.dicom-intake > header span { color:#6d8dac; font-size:9px; font-weight:750; letter-spacing:.15em; }
+.dicom-intake > header h2 { margin:2px 0 0; font-size:19px; font-weight:620; }
+.dicom-intake > header > button { width:32px; height:32px; border:0; border-radius:7px; color:#9db0c9; background:transparent; cursor:pointer; font-size:24px; line-height:1; }
+.dicom-intake > header > button:hover { color:#fff; background:#1b2a40; }
+.intake-flow { display:grid; grid-template-columns:1fr 28px 1fr 28px 1fr; align-items:center; margin:20px 22px 16px; }
+.intake-flow > div { display:flex; align-items:center; gap:8px; min-width:0; }
+.intake-flow i { display:grid; place-items:center; flex:0 0 25px; height:25px; border:1px solid #38506f; border-radius:50%; color:#7890ae; font-size:10px; font-style:normal; }
+.intake-flow .active i { border-color:#4bbccb; color:#07131d; background:#61d4df; }
+.intake-flow span { display:grid; gap:1px; min-width:0; }
+.intake-flow b { color:#d4deec; font-size:10px; font-weight:650; }
+.intake-flow small { overflow:hidden; color:#7086a3; font-size:8px; text-overflow:ellipsis; white-space:nowrap; }
+.intake-flow > em { height:1px; margin:0 6px; background:#2b3f59; }
+.dicom-dropzone { display:grid; justify-items:center; gap:7px; margin:0 22px; padding:26px 18px 22px; border:1px dashed #3a5575; border-radius:10px; color:#6f8baa; background:#0c1728; text-align:center; transition:.16s ease; }
+.dicom-dropzone.dragging { border-color:#66d4df; background:#10283a; transform:scale(1.005); }
+.dicom-dropzone.has-files { border-style:solid; border-color:#347768; color:#5ad3a7; background:#0e2729; }
+.dicom-dropzone b { color:#e1e9f5; font-size:13px; }
+.dicom-dropzone > span { color:#8196b1; font-size:10px; line-height:1.5; }
+.dicom-dropzone > input { display:none; }
+.dicom-picker-actions { display:flex; gap:8px; margin-top:7px; }
+.dicom-picker-actions button { display:flex; align-items:center; gap:6px; height:32px; padding:0 11px; border:1px solid #354e6c; border-radius:6px; color:#c6d3e4; background:#15243a; cursor:pointer; font-size:10px; }
+.dicom-picker-actions button:hover { border-color:#4d769c; background:#1a2d46; }
+.intake-fields { display:grid; gap:15px; padding:18px 22px; }
+.intake-fields fieldset { margin:0; padding:0; border:0; }
+.intake-fields legend,.intake-fields label > span:first-child { display:block; margin-bottom:7px; color:#a8bad0; font-size:10px; font-weight:620; }
+.intake-fields label > span small { color:#667d9a; font-weight:450; }
+.priority-options { display:flex; width:100%; padding:3px; border:1px solid #2c405b; border-radius:7px; background:#0b1626; }
+.priority-options button { flex:1; height:29px; border:0; border-radius:5px; color:#8095af; background:transparent; cursor:pointer; font-size:10px; }
+.priority-options button.active { color:#eef5ff; background:#263b56; box-shadow:0 2px 7px rgba(0,0,0,.22); }
+.priority-options button:last-child.active { color:#ffd5d8; background:#63313a; }
+.intake-fields textarea { box-sizing:border-box; width:100%; height:66px; resize:vertical; padding:10px 11px; border:1px solid #304661; border-radius:7px; outline:none; color:#e3ebf6; background:#0b1626; font:11px/1.45 inherit; }
+.intake-fields textarea:focus { border-color:#4b9aaa; box-shadow:0 0 0 2px rgba(69,170,187,.12); }
+.intake-fields textarea::placeholder { color:#607691; }
+.auto-ai { display:flex; align-items:flex-start; gap:10px; padding:11px 12px; border:1px solid #2f5267; border-radius:8px; background:#102536; cursor:pointer; }
+.auto-ai.disabled { opacity:.62; cursor:default; }
+.auto-ai input { margin-top:2px; accent-color:#4fc6d2; }
+.auto-ai > span { display:grid!important; gap:2px; margin:0!important; }
+.auto-ai b { color:#dce9f6; font-size:10px; }
+.auto-ai small { color:#7893ae!important; font-size:9px; line-height:1.45; }
+.intake-progress { margin:0 22px 14px; padding:11px 12px; border:1px solid #2a4960; border-radius:7px; background:#0d1b2c; }
+.intake-progress > div { display:flex; justify-content:space-between; margin-bottom:8px; color:#9eb2c9; font-size:9px; }
+.intake-progress > i { display:block; height:3px; overflow:hidden; border-radius:3px; background:#243750; }
+.intake-progress > i span { display:block; height:100%; background:#55cad5; transition:width .18s; }
+.intake-error { display:flex; align-items:center; gap:7px; margin:0 22px 14px; padding:10px 11px; border:1px solid #683740; border-radius:7px; color:#f0a9b0; background:#321c26; font-size:10px; }
+.dicom-intake > footer { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:15px 22px; border-top:1px solid #243650; background:#0d1829; }
+.dicom-intake > footer p { display:flex; align-items:center; gap:6px; margin:0; color:#6d849f; font-size:9px; }
+.dicom-intake > footer > div { display:flex; gap:8px; }
+.dicom-intake > footer button { height:35px; padding:0 13px; border-radius:6px; cursor:pointer; font-size:10px; font-weight:650; }
+.intake-cancel { border:1px solid #30445e; color:#9eb0c6; background:transparent; }
+.intake-submit { display:flex; align-items:center; gap:7px; border:1px solid #69d3db; color:#07161c; background:#62d1da; }
+.dicom-intake > footer button:disabled { cursor:not-allowed; opacity:.45; }
+@media (max-width:620px) { .dicom-intake-backdrop{padding:0}.dicom-intake{height:100%;max-height:none;border:0;border-radius:0}.intake-flow small{display:none}.dicom-intake>footer{align-items:flex-end}.dicom-intake>footer p{max-width:170px}.intake-submit{white-space:nowrap} }

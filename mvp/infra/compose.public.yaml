@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: ../..
+      dockerfile: mvp/infra/docker/app.public.Dockerfile
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      BRAINHEM_RBAC_ENABLED: "true"
+      BRAINHEM_FEEDBACK_ADMIN: "${BRAINHEM_FEEDBACK_ADMIN:-admin}"
+      BRAINHEM_FEEDBACK_ADMIN_PASSWORD: "${BRAINHEM_FEEDBACK_ADMIN_PASSWORD:?Set your local admin password}"
+      BRAINHEM_FEEDBACK_USER: "${BRAINHEM_FEEDBACK_USER:-user}"
+      BRAINHEM_FEEDBACK_USER_PASSWORD: "${BRAINHEM_FEEDBACK_USER_PASSWORD:?Set your local user password}"
+    volumes:
+      - brainhem-data:/var/lib/brainhem
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+volumes:
+  brainhem-data:

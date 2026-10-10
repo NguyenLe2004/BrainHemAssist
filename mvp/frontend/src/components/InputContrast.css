@@ -1,0 +1,43 @@
+.app-login-card input,
+.feedback-admin-login input {
+  color: #17324d !important;
+  background: #ffffff !important;
+  caret-color: #168ed2 !important;
+  -webkit-text-fill-color: #17324d !important;
+}
+
+.app-login-card input::placeholder,
+.feedback-admin-login input::placeholder {
+  color: #8296aa !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #8296aa !important;
+}
+
+.app-login-card input:-webkit-autofill,
+.feedback-admin-login input:-webkit-autofill {
+  -webkit-text-fill-color: #17324d !important;
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+}
+
+/* Feedback is taller than a diagnostic viewport; it must own its scroll area
+   because the workstation shell intentionally locks body scrolling. */
+.feedback-page {
+  width: 100vw;
+  height: 100vh;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+}
+
+.feedback-page .feedback-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.feedback-page .feedback-main,
+.feedback-page .feedback-admin {
+  overflow: visible;
+}

@@ -1,0 +1,119 @@
+{
+  "review_scope": "Baseline S source-lineage references and optional annotation integration; no complete weight/data rights clearance. Reviewed upstream commit is a comparison snapshot, not proof of historical local import unless explicitly stated.",
+  "components": [
+    {
+      "component": "UNeXt",
+      "repository": "https://github.com/jeya-maria-jose/UNeXt-pytorch",
+      "reviewed_commit": "6ad0855114a35afbf81decf5dc912cd8de70476a",
+      "local_import_commit_confirmed": false,
+      "status": "source resemblance; historical import unknown",
+      "evidence": "Shared tokenized MLP and patch embedding structure. Patch embedding forward matches after renaming local variables; attribution chain acknowledged upstream.",
+      "license_reference": "UNeXt.txt",
+      "license_sha256": "937c2c490f55b11c20af518ba4c094506041125553b7b42f290c495ba07cff74",
+      "primary_files": [
+        "https://github.com/jeya-maria-jose/UNeXt-pytorch/blob/6ad0855114a35afbf81decf5dc912cd8de70476a/archs.py",
+        "https://github.com/jeya-maria-jose/UNeXt-pytorch/blob/6ad0855114a35afbf81decf5dc912cd8de70476a/LICENSE",
+        "https://github.com/jeya-maria-jose/UNeXt-pytorch/blob/6ad0855114a35afbf81decf5dc912cd8de70476a/README.md"
+      ]
+    },
+    {
+      "component": "SegFormer",
+      "repository": "https://github.com/NVlabs/SegFormer",
+      "reviewed_commit": "65fa8cfa9b52b6ee7e8897a98705abf8570f9e32",
+      "local_import_commit_confirmed": false,
+      "status": "inherited source-license lead; applicability unresolved",
+      "evidence": "Patch embedding forward matches after renaming local variables. Upstream file carries NVIDIA source-license header; no complete local import history exists.",
+      "license_reference": "SegFormer.txt",
+      "license_sha256": "f549820c06519e3105e5174a2fd7285224ffd2268a7f879a843b1a255fd04a61",
+      "primary_files": [
+        "https://github.com/NVlabs/SegFormer/blob/65fa8cfa9b52b6ee7e8897a98705abf8570f9e32/mmseg/models/backbones/mix_transformer.py",
+        "https://github.com/NVlabs/SegFormer/blob/65fa8cfa9b52b6ee7e8897a98705abf8570f9e32/LICENSE"
+      ]
+    },
+    {
+      "component": "CBAM",
+      "repository": "https://github.com/Jongchan/attention-module",
+      "reviewed_commit": "459efad0e05ee7dde50c41ca10a3d0800bc3792a",
+      "local_import_commit_confirmed": false,
+      "status": "active baseline source-lineage lead; historical import unknown",
+      "evidence": "Three helper forward methods match the reviewed upstream AST exactly. Baseline exporter invokes corresponding attention modules. This is not complete author/rights verification.",
+      "license_reference": "CBAM.txt",
+      "license_sha256": "a3560c921529f267558fd83b9ea2664194ce81c9b02f5990073200fd3ac50ecd",
+      "primary_files": [
+        "https://github.com/Jongchan/attention-module/blob/459efad0e05ee7dde50c41ca10a3d0800bc3792a/MODELS/cbam.py",
+        "https://github.com/Jongchan/attention-module/blob/459efad0e05ee7dde50c41ca10a3d0800bc3792a/LICENSE"
+      ]
+    },
+    {
+      "component": "MedSAM2",
+      "repository": "https://github.com/bowang-lab/MedSAM2",
+      "reviewed_commit": "332f30d420f1d1b08e2a79b3ae6a602458808383",
+      "local_import_commit_confirmed": true,
+      "status": "optional integration; source checkout revision verified",
+      "evidence": "Local clean checkout and LICENSE/build_sam.py/video_predictor_npz.py bytes match the pinned upstream commit. Adapter imports the NPZ predictor API. Upstream code/weights are not included.",
+      "license_reference": "MedSAM2-source.txt",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "primary_files": [
+        "https://github.com/bowang-lab/MedSAM2/blob/332f30d420f1d1b08e2a79b3ae6a602458808383/LICENSE",
+        "https://github.com/bowang-lab/MedSAM2/blob/332f30d420f1d1b08e2a79b3ae6a602458808383/README.md",
+        "https://github.com/bowang-lab/MedSAM2/blob/332f30d420f1d1b08e2a79b3ae6a602458808383/sam2/build_sam.py",
+        "https://github.com/bowang-lab/MedSAM2/blob/332f30d420f1d1b08e2a79b3ae6a602458808383/sam2/sam2_video_predictor_npz.py"
+      ]
+    },
+    {
+      "component": "SAM2",
+      "repository": "https://github.com/facebookresearch/sam2",
+      "reviewed_commit": "2b90b9f5ceec907a1c18123530e92e794ad901a4",
+      "local_import_commit_confirmed": false,
+      "status": "optional upstream reference; not shipped",
+      "evidence": "MedSAM2 source retains Meta notices. Reviewed official SAM2 README declares Apache-2.0 for official code and official model checkpoints; this does not cover separately fine-tuned weights.",
+      "license_reference": "SAM2-source.txt",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "primary_files": [
+        "https://github.com/facebookresearch/sam2/blob/2b90b9f5ceec907a1c18123530e92e794ad901a4/LICENSE",
+        "https://github.com/facebookresearch/sam2/blob/2b90b9f5ceec907a1c18123530e92e794ad901a4/README.md",
+        "https://github.com/facebookresearch/sam2/blob/2b90b9f5ceec907a1c18123530e92e794ad901a4/sam2/build_sam.py"
+      ]
+    },
+    {
+      "component": "DE-UNeXt",
+      "repository": "https://github.com/davidsmithwj/DE-UNeXt",
+      "reviewed_commit": "c70032d24e848d51a08fc2e569bac73c721932ba",
+      "local_import_commit_confirmed": false,
+      "status": "concrete source-lineage candidate; historical import unknown",
+      "evidence": "Nested source contains matching architecture/helper structure and attention skip integration; nested MIT notice exists despite null root license metadata. No assumption of blanket rights to inherited code or learned weights.",
+      "license_reference": "DE-UNeXt.txt",
+      "license_sha256": "937c2c490f55b11c20af518ba4c094506041125553b7b42f290c495ba07cff74",
+      "primary_files": [
+        "https://github.com/davidsmithwj/DE-UNeXt/blob/c70032d24e848d51a08fc2e569bac73c721932ba/DE-UNeXt-main/DE-UNeXt/LICENSE",
+        "https://github.com/davidsmithwj/DE-UNeXt/blob/c70032d24e848d51a08fc2e569bac73c721932ba/DE-UNeXt-main/DE-UNeXt/archs.py",
+        "https://github.com/davidsmithwj/DE-UNeXt/blob/c70032d24e848d51a08fc2e569bac73c721932ba/DE-UNeXt-main/DE-UNeXt/cbam.py"
+      ]
+    },
+    {
+      "component": "timm",
+      "status": "helper provenance reference only; original version unconfirmed",
+      "license_reference": "timm.txt",
+      "license_sha256": "71b111620fa32c17a80ccd6db2da759d31a591e497d8b5f382174f59d1b59d49",
+      "evidence": "Local baseline uses a local stochastic-depth helper and torch initializer; no timm import is required on exported baseline inference path. Existing Apache reference is not proof of copied version or weight rights."
+    }
+  ],
+  "weight_rights": {
+    "Baseline S": "Unverified ownership, inherited rights, training-data permissions and artifact redistribution rights. No license grant added.",
+    "MedSAM2": {
+      "shipped": false,
+      "model_card_reference": "https://huggingface.co/wanglab/MedSAM2/blob/e4a6f35edd7e091619cbc0750f462f1574e23955/README.md",
+      "reviewed_model_card_revision": "e4a6f35edd7e091619cbc0750f462f1574e23955",
+      "declared_metadata": "cc-by-sa-4.0",
+      "additional_text": "Research and education purposes only. Applicability to a particular local checkpoint and consistency of stated conditions not resolved."
+    },
+    "SAM2": "No checkpoints included. Official upstream Apache declaration verified; a local optional checkpoint has not been matched by hash to an official licensed release."
+  },
+  "additional_notice": {
+    "component": "SAM2 optional connected-component code",
+    "license_reference": "SAM2-cc_torch.txt",
+    "primary_url": "https://github.com/facebookresearch/sam2/blob/2b90b9f5ceec907a1c18123530e92e794ad901a4/LICENSE_cctorch",
+    "license": "BSD-3-Clause",
+    "shipped": false
+  }
+}

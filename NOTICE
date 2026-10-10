@@ -1,0 +1,28 @@
+BrainHem Assist — Baseline S publication snapshot
+
+The project owner retains copyright in original project contributions and
+has not selected an open-source license. LICENSE grants no blanket rights
+to the original source or the included Baseline S model artifact.
+
+The application integrates React, NiiVue, FastAPI and other dependencies.
+Their copyrights and license terms remain with their respective owners.
+
+mvp/frontend/scripts/patch-niivue-outline.mjs contains and modifies a NiiVue
+shader fragment. Preserve LICENSES/NiiVue.txt (BSD-2-Clause) when distributing
+this fragment or a bundle containing it.
+
+This snapshot includes exactly one model artifact: models/baseline_s.onnx.
+Its graph identifiers were normalized for publication; this does not hide
+the graph topology, operators or learned weights. Model slots M and L have
+no implementation or artifacts in this snapshot.
+
+The complete provenance and distribution rights of Baseline S weights,
+architecture-derived portions and training data have not been verified.
+Possible upstream source-license references are retained in
+LICENSES/model-provenance/ and described in THIRD-PARTY-NOTICES.txt.
+Their inclusion records review leads; it is not a claim that one of those
+licenses grants rights to this complete ONNX artifact.
+
+No medical datasets, patient scans, clinical screenshots, private model
+source, local account information or prior Git history are included.
+Existing source comments and upstream notices have been retained.

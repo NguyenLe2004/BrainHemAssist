@@ -1,0 +1,114 @@
+THIRD-PARTY COMPONENTS AND MODEL PUBLICATION NOTES
+
+This snapshot does not assign a single license to all its contents.
+The original project contributions have no new open-source grant; see LICENSE.
+Third-party portions retain their own copyright and license permissions.
+
+1. NiiVue
+The viewer and the shader fragment in patch-niivue-outline.mjs use NiiVue.
+BSD-2-Clause requires preservation of the copyright notice, conditions and
+disclaimer in source distributions, and appropriate notices in binaries.
+The full text is in LICENSES/NiiVue.txt.
+Upstream: https://github.com/niivue/niivue
+Version, license fingerprints and npm integrity values are recorded in
+LICENSES/upstream-sources.json and LICENSES/frontend-dependencies.json.
+
+2. Frontend dependencies
+LICENSES/frontend-dependencies.json records the package-lock graph, including
+optional platform packages. LICENSES/npm/ preserves license and NOTICE files
+supplied by packages installed during preparation. React/ReactDOM and many
+other dependencies use MIT; other packages declare ISC, BSD or Apache-2.0.
+caniuse-lite declares CC-BY-4.0. Consult each package record and notice.
+Optional packages not installed locally have registry metadata but no local
+license text here; their binaries are not included in this source snapshot.
+When distributing built JavaScript, native modules or Docker images, preserve
+the notices for the exact package versions included in those outputs.
+
+3. Python and runtime dependencies
+Python dependencies and ONNX Runtime are installed separately using the
+requirements files. No installed Python packages or vendor runtime binaries
+are included. Refer to their own licenses when distributing an environment,
+application bundle or image. A requirements pin does not grant artifact rights.
+
+4. Baseline S artifact and unresolved provenance
+models/baseline_s.onnx is the only included model artifact. Original project
+copyright is retained; no new permission to use, modify or redistribute these
+weights is granted here. Full weight provenance, contributor rights, training
+data permissions and rights to distribute architecture-derived portions have
+not been verified. The name Baseline S and normalized graph identifiers do not
+change those rights and do not conceal the readable graph or learned weights.
+
+The underlying baseline implementation was compared with concrete upstream
+source snapshots, not just paper titles. DE-UNeXt at commit
+c70032d24e848d51a08fc2e569bac73c721932ba contains a nested MIT notice and
+matching architecture/helper structure. Attention helpers on the export path
+also match methods in Jongchan/attention-module at commit
+459efad0e05ee7dde50c41ca10a3d0800bc3792a. UNeXt and SegFormer patch embedding
+methods share equivalent source operations. These observations are source-
+lineage evidence; the original local import revisions and complete chain of
+permissions have not been established.
+
+Full notices retained in LICENSES/model-provenance/ are:
+- DE-UNeXt.txt and UNeXt.txt: MIT, Jeya Maria Jose, 2022.
+- CBAM.txt: MIT, Jongchan Park, 2019.
+- SegFormer.txt: NVIDIA Source Code License.
+- timm.txt: Apache-2.0, Ross Wightman, 2019; historical helper version unconfirmed.
+
+The SegFormer reference limits the Work and derivative works to
+non-commercial research or evaluation. An MIT label elsewhere does not
+resolve applicable inherited restrictions. UNeXt acknowledges helper/code
+sources beyond its own repository; those historical source relationships
+have not been exhaustively mapped. Neither a paper citation nor a filename
+proves code ownership or weight-distribution rights.
+
+LICENSES/model-provenance-inventory.json records pinned comparison snapshots,
+primary URLs, notice checksums and the distinction between confirmed source
+checkout identity and unconfirmed historical import. These notices are not
+represented as a complete license grant for Baseline S. Their applicability
+and any additional notices must be confirmed before relying on permission
+to distribute or use the artifact.
+Reference upstreams:
+https://github.com/davidsmithwj/DE-UNeXt/tree/c70032d24e848d51a08fc2e569bac73c721932ba
+https://github.com/Jongchan/attention-module/tree/459efad0e05ee7dde50c41ca10a3d0800bc3792a
+https://github.com/jeya-maria-jose/UNeXt-pytorch/tree/6ad0855114a35afbf81decf5dc912cd8de70476a
+https://github.com/NVlabs/SegFormer/blob/65fa8cfa9b52b6ee7e8897a98705abf8570f9e32/LICENSE
+https://github.com/huggingface/pytorch-image-models
+
+No private architecture source or artifacts for model slots M/L are included.
+Their loaders return None. No dataset or patient image is included. A code
+license, dataset license and weight license are separate permissions; none
+is clinical-use approval. The owner will add model documentation separately.
+
+
+5. Optional MedSAM2 / SAM2 annotation integration
+The annotation adapter references MedSAM2's NPZ video-predictor API. The
+reviewed local source checkout matches bowang-lab/MedSAM2 commit
+332f30d420f1d1b08e2a79b3ae6a602458808383, including its Apache-2.0 LICENSE
+and Meta copyright headers in SAM2-derived source. Reference source notices
+are retained as MedSAM2-source.txt and SAM2-source.txt. Official SAM2 at
+2b90b9f5ceec907a1c18123530e92e794ad901a4 declares Apache-2.0 for its code
+and official checkpoints; optional connected-component code has a separate
+BSD-3-Clause notice retained as SAM2-cc_torch.txt.
+
+No upstream MedSAM2/SAM2 code or checkpoint is included here; only the local
+integration adapter is included. Installing external source or supplying a
+checkpoint requires checking the exact artifacts and notices separately.
+MedSAM2's official weight model card at revision
+e4a6f35edd7e091619cbc0750f462f1574e23955 declares cc-by-sa-4.0 in metadata
+and additionally states research/education-only use in its license section.
+These conditions are recorded without resolving their consistency or their
+applicability to any particular locally configured checkpoint. Do not apply
+its Apache source license to fine-tuned model weights by assumption.
+https://github.com/bowang-lab/MedSAM2/tree/332f30d420f1d1b08e2a79b3ae6a602458808383
+https://github.com/facebookresearch/sam2/blob/2b90b9f5ceec907a1c18123530e92e794ad901a4/README.md
+https://huggingface.co/wanglab/MedSAM2/blob/e4a6f35edd7e091619cbc0750f462f1574e23955/README.md
+
+6. Later contributions and publication
+Verify ownership and contributor rights for original code, diagrams and any
+new model or dataset material. Adding MIT or Apache-2.0 later cannot override
+upstream terms. Keep all applicable attribution and license notices.
+GitHub public visibility does not by itself grant an open-source license.
+https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository
+
+This file records technical review findings and unresolved permissions.
+It does not certify that all copyright or licensing questions are resolved.

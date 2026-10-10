@@ -1,0 +1,10 @@
+fastapi==0.143.0
+starlette==1.7.0
+uvicorn[standard]==0.34.2
+python-multipart==0.0.32
+nibabel==5.3.2
+numpy==1.26.4
+requests>=2.32,<3
+onnx>=1.17,<2
+SimpleITK>=2.4,<3
+pydicom>=3,<4

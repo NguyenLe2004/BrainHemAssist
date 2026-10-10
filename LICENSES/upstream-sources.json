@@ -1,0 +1,12 @@
+[
+  {
+    "component": "NiiVue",
+    "version": "0.69.0",
+    "repository": "https://github.com/niivue/niivue",
+    "ref": "@niivue/niivue-v0.69.0",
+    "license": "BSD-2-Clause",
+    "license_blob_sha": "a592d66dc5dbde86b58200ef9145f9b3e12b55f7",
+    "license_sha256": "604be23eceeef93996165e2cd46eefd4d713f98f1b4a5414ab109516dc1b30bf",
+    "license_source": "https://github.com/niivue/niivue/blob/@niivue/niivue-v0.69.0/LICENSE"
+  }
+]
