@@ -16,7 +16,7 @@ PRIVATE_SUFFIXES = (".md", ".nii", ".nii.gz", ".dcm", ".dicom", ".npy", ".npz",
                     ".pem", ".key", ".p12", ".pfx", ".log", ".pid", ".jsonl",
                     ".csv", ".zip", ".tar", ".tar.gz", ".pyc")
 PUBLIC_BINARY = {
-    "docs/images/model-architecture.png": "7bafa962030c58ab33430124eca123736d61a38728d28b9fbb313ba70b424e9e",
+    "docs/images/model-architecture.png": "af62185fcc8390af7379991698b579d5d9234d6c5dc953a10cd424f92b446ade",
     "models/baseline_s.onnx": "92bc39b59ba8edd9f59241baa0b6ebe707690d92257cccc32c5933dbdc282ee5",
     "models/baseline_s.int8.onnx": "e4e81c678bfdd920a7070ffbdca20eb01dc77da2a16478b7012b47819c4f8845",
     "docs/images/clinical-workspace.png": "843cff8fa937c11d519c78114d1cd51386b391ffd832d9f96febb19ba2b7b86f",

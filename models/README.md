@@ -2,13 +2,13 @@
 
 [← BrainHem Assist](../README.md) · [Setup and tensor API](../docs/SETUP.md#onnx-inference)
 
-Brain CT hemorrhage segmentation using paired CT/CLAHE inputs and bidirectional slice context. The published FP32 weights match the original BiGRU baseline checkpoint selected at epoch 105.
+Brain CT hemorrhage segmentation using paired CT/CLAHE inputs and bidirectional slice context. The published FP32 weights match the original BiGRU baseline checkpoint.
 
 ## Architecture
 
 ![Original BiGRU–DE-UNeXt architecture diagram](../docs/images/model-architecture.png)
 
-*Original project diagram. CT thumbnails use the openly licensed demonstration sample attributed in the [project README](../README.md#image-source).*
+*Original architecture diagram supplied by the project author. The displayed Softmax/Argmax step is output postprocessing; the ONNX graph outputs logits.*
 
 ## Segmentation results
 
@@ -27,13 +27,13 @@ The same BHSD 31-scan and PhysioNet 36-positive-scan cohorts were used for these
 
 | Model / configuration | Parameters (M) | BHSD Dice | PhysioNet Dice |
 | --- | ---: | ---: | ---: |
-| DEUNeXt + CLAHE, epoch 958 | — | — | 0.4862 |
+| DEUNeXt + CLAHE | — | — | 0.4862 |
 | MONAI UNet | 4.344 | 0.6172 | 0.4039 |
 | MONAI AttentionUnet | 5.616 | 0.6066 | 0.3905 |
 | MONAI DynUNet | 7.930 | 0.5996 | 0.4071 |
 | MONAI SegResNet | 6.292 | 0.6036 | 0.4292 |
 | MONAI SwinUNETR | 15.703 | 0.5175 | 0.3350 |
-| **BiGRU–DE-UNeXt, epoch 105** | **2.027** | **0.6551** | **0.5061** |
+| **BiGRU–DE-UNeXt** | **2.027** | **0.6551** | **0.5061** |
 
 Training budgets, optimizers and 2D/3D inference paths differ, so this is a comparison of completed configurations, **not a controlled architecture ablation**. A dash means the comparable result was not retained. Parameter counts describe the original trainable networks, before ONNX export and folding. Comparison models and evaluation datasets are not bundled.
 
