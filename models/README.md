@@ -23,17 +23,19 @@ BHSD was used for checkpoint selection and has one patient-identifier prefix ove
 
 ## Model comparison
 
-The same BHSD 31-scan and PhysioNet 36-positive-scan cohorts were used for these historical comparisons. Dice is the **per-scan macro average**.
+The MONAI and BiGRU rows use BHSD 31 scans and PhysioNet 36 positive scans, reporting **per-scan macro Dice**. The original DE-UNeXt reference is from an earlier project evaluation.
 
 | Model / configuration | Parameters (M) | BHSD Dice | PhysioNet Dice |
 | --- | ---: | ---: | ---: |
-| DEUNeXt + CLAHE | — | — | 0.4862 |
+| DE-UNeXt (original) | — | — | 0.38† |
 | MONAI UNet | 4.344 | 0.6172 | 0.4039 |
 | MONAI AttentionUnet | 5.616 | 0.6066 | 0.3905 |
 | MONAI DynUNet | 7.930 | 0.5996 | 0.4071 |
 | MONAI SegResNet | 6.292 | 0.6036 | 0.4292 |
 | MONAI SwinUNETR | 15.703 | 0.5175 | 0.3350 |
 | **BiGRU–DE-UNeXt** | **2.027** | **0.6551** | **0.5061** |
+
+† Reported in the earlier PhysioNet CT-ICH evaluation: Dice 0.38, IoU 0.28, precision 0.40, recall 0.46 and HD95 84.98 mm. Its exact split and averaging protocol have not been matched to the current 36-case benchmark.
 
 Training budgets, optimizers and 2D/3D inference paths differ, so this is a comparison of completed configurations, **not a controlled architecture ablation**. A dash means the comparable result was not retained. Parameter counts describe the original trainable networks, before ONNX export and folding. Comparison models and evaluation datasets are not bundled.
 
