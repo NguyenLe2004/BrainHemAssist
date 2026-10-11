@@ -126,6 +126,8 @@ LICENSES/Seg3DData.txt. The CT volume is not included in this repository.
 The clinical workspace image shows a recorded Baseline S FP32 prediction on
 a 32-slice subset, prepared through a separately configured research pipeline.
 Its overlay is model output, not an expert label or clinical accuracy result.
+The model architecture image retains the project's original vector diagram;
+its CT and prediction thumbnails use the same licensed demonstration sample.
 This sample license does not
 license the original project or Baseline S artifact.
 Image source: https://github.com/niivue/niivue-demo-images/blob/f6f98294c1fa89a3a32e8a44eab92368374150a0/CT_Electrodes.nii.gz

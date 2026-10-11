@@ -1,104 +1,56 @@
 # Baseline S — BiGRU–DE-UNeXt
 
-[← BrainHem Assist](../README.md) · [Installation and application guide](../docs/SETUP.md)
+[← BrainHem Assist](../README.md) · [Setup and tensor API](../docs/SETUP.md#onnx-inference)
 
-Baseline S is the project's brain CT hemorrhage segmentation model. It combines two representations of the same scan: a CT intensity input and a CLAHE-enhanced input. Multi-scale fusion joins their spatial features, while a lightweight bidirectional GRU adds context from neighboring slices before decoding a segmentation mask.
-
-The published FP32 ONNX artifact was matched to the project's original BiGRU baseline checkpoint. The architecture and pipeline below describe that baseline; they do not describe the unimplemented M/L slots or a different model variant.
+Brain CT hemorrhage segmentation using paired CT/CLAHE inputs and bidirectional slice context. The published FP32 weights match the original BiGRU baseline checkpoint selected at epoch 105.
 
 ## Architecture
 
-![Baseline S dual-input encoders, CBAM fusion, BiGRU context and segmentation decoder](../docs/images/model-architecture.svg)
+![Original BiGRU–DE-UNeXt architecture diagram](../docs/images/model-architecture.png)
 
-*Architecture of the published Baseline S, reconciled against the original implementation and exported ONNX graph. The model contains two GRU operations, for forward and backward slice context.*
+*Original project diagram. CT thumbnails use the openly licensed demonstration sample attributed in the [project README](../README.md#image-source).*
 
-### Two views of the same CT
+## Segmentation results
 
-The CT branch retains the windowed intensity representation. The second branch applies **CLAHE** (Contrast Limited Adaptive Histogram Equalization) to emphasize local contrast. Both branches receive the same ordered slices with matching spatial geometry; the enhanced tensor is not a second scan.
+Results from the original **PyTorch research runs with XY mirror TTA**. Macro metrics are computed per scan and then averaged; pooled Dice combines voxel counts across the cohort.
 
-Each encoder progresses through **16, 32, 128, 160 and 256 channels**, combining convolutional feature extraction with tokenized MLP blocks. The earlier encoder paths are separate; the higher `patch3` and `patch4` projection modules share weights between the two branches.
+| Evaluation cohort | Scans | Macro Dice | Pooled Dice | Macro precision | Macro recall | Mean HD95 (mm) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| BHSD historical validation | 31 | **0.6551** | **0.7595** | 0.7393 | 0.6355 | 25.758 |
+| PhysioNet positive cases | 36 | **0.5061** | **0.7147** | 0.5720 | 0.5163 | 36.490 |
 
-### Multi-scale fusion and skip connections
+BHSD was used for checkpoint selection and has one patient-identifier prefix overlapping training records. PhysioNet was consulted during development and contains positive cases only in this evaluation. These are development results, not independent clinical validation; specificity on negative scans was not established.
 
-At four encoder levels, features from the CT and CLAHE branches are fused through **CBAM** (Convolutional Block Attention Module). Its channel and spatial gates adjust which features contribute to each decoder skip connection.
+## Model comparison
 
-At the deepest level, the two 256-channel representations are concatenated into 512 channels and projected back to 256. This fused representation supplies the slice-context module and decoder. The four skip connections preserve finer spatial information during upsampling.
+The same BHSD 31-scan and PhysioNet 36-positive-scan cohorts were used for these historical comparisons. Dice is the **per-scan macro average**.
 
-### BiGRU-Lite slice context
+| Model / configuration | Parameters (M) | BHSD Dice | PhysioNet Dice |
+| --- | ---: | ---: | ---: |
+| DEUNeXt + CLAHE, epoch 958 | — | — | 0.4862 |
+| MONAI UNet | 4.344 | 0.6172 | 0.4039 |
+| MONAI AttentionUnet | 5.616 | 0.6066 | 0.3905 |
+| MONAI DynUNet | 7.930 | 0.5996 | 0.4071 |
+| MONAI SegResNet | 6.292 | 0.6036 | 0.4292 |
+| MONAI SwinUNETR | 15.703 | 0.5175 | 0.3350 |
+| **BiGRU–DE-UNeXt, epoch 105** | **2.027** | **0.6551** | **0.5061** |
 
-The context module reduces the feature representation to **64 channels** and uses forward and backward GRUs over **six-slice windows with stride three**. Each direction's hidden states are shifted by one slice, so the context comes from earlier and later slices rather than the current slice itself. Overlapping windows' 128-channel contexts are averaged, then projected back to 256 channels.
+Training budgets, optimizers and 2D/3D inference paths differ, so this is a comparison of completed configurations, **not a controlled architecture ablation**. A dash means the comparable result was not retained. Parameter counts describe the original trainable networks, before ONNX export and folding. Comparison models and evaluation datasets are not bundled.
 
-The context is added to the spatial features through a bounded residual coefficient:
+## Compute benchmark
 
-```text
-output features = F + 0.25 × tanh(α) × context
-```
+Historical **PyTorch FP16 autocast** measurement on an **RTX 3050**, using one CT volume of **512 × 512 × 47** voxels. Weights were loaded before one warm-up and three synchronized measurements.
 
-Here, `F` is the fused spatial feature and `α` is a learned scalar. Bounding the context coefficient limits the strength of the recurrent update. Slice order therefore matters: the leading tensor dimension must not be used as an arbitrary batch of unrelated scans.
+| Measurement | Result |
+| --- | ---: |
+| Trainable parameters | 2,027,148 |
+| Mean processing time / CT | 2.064 s |
+| Range across three measurements | 2.044–2.094 s |
+| Peak allocated tensor memory | 2,633.6 MiB |
+| Main-operation MACs / slice | 3.813 GMAC |
+| Corresponding FLOPs / slice | 7.625 GFLOPs |
 
-### Decoder and mask
-
-The upsampling decoder combines the context-enriched features with the four fused skips. Its final 16-channel representation is mapped to **two logit channels** by the segmentation head:
-
-| Class index | Meaning |
-| --- | --- |
-| `0` | Background |
-| `1` | Hemorrhage |
-
-The ONNX output contains logits, without a final Softmax. The baseline selects the winning class with `argmax`; logits are not calibrated confidence scores. The original baseline does **not** apply connected-component filtering after prediction.
-
-## CT preparation and inference pipeline
-
-The original research pipeline prepares a scan before passing tensors to the model:
-
-1. Preserve slice ordering and through-plane geometry, and crop the nonzero image region while recording its original coordinates.
-2. Clip CT intensities to **12–89 HU**. Normalize using mean **47.800434** and standard deviation **18.999517**, then resample the in-plane spacing to **0.488281 mm**.
-3. Reconstruct windowed HU from the normalized tensor and map it to `[0,1]` for Kornia CLAHE (clip limit **2.0**, grid **8 × 8**). Preserve saturated zero/one endpoints, then map the enhanced image back to the same fixed CT normalization range; do not normalize each slice independently.
-4. Run **512 × 512** spatial tiles with 50% overlap, blend predictions with Gaussian weights, and combine four XY mirror augmentations.
-5. Restore the logits to the original image geometry **before** selecting the mask by class `argmax`.
-
-Through-plane spacing is preserved; the sequence module supplies cross-slice context. Spatial restoration is necessary before interpreting a mask in the scan's original coordinates or measuring physical volume.
-
-These settings document the original pipeline. The public [`baseline`](../baseline/) package accepts prepared tensors; it does not bundle that complete CT preprocessing, tiling, augmentation or geometry-restoration pipeline. The web application's external inference connector is a separate integration and is disabled by default.
-
-## Published tensor interface
-
-| Tensor | Type and shape | Role |
-| --- | --- | --- |
-| `image` | Finite `float32`, `[D, 1, 512, 512]` | Prepared CT slice sequence |
-| `enhanced` | Finite `float32`, `[D, 1, 512, 512]` | Aligned CLAHE representation |
-| `logits` | `float32`, `[D, 2, 512, 512]` | Background and hemorrhage scores |
-
-Both inputs must have identical shapes. The loader accepts **1–128 ordered slices** per call. That interface limit is not an assurance that every sequence length or integration has been clinically validated. Install and use the tensor API separately from the web application; see the [setup guide](../docs/SETUP.md).
-
-## Training approach
-
-Training followed the nnU-Net v2 2D workflow, with 121 training scans and 31 model-selection scans (fold 0). Each training batch contained two ordered six-slice sequences. The published weights correspond to the selected checkpoint saved at epoch 105.
-
-The objective combined Dice and cross-entropy with deep supervision, plus a persistent-recall term weighted **0.15**. This term penalizes missed foreground supported by an adjacent slice within a three-pixel in-plane tolerance. Training used SGD with Nesterov momentum; the backbone was frozen for the first 30 epochs, then trained at one-tenth the context adapter's learning rate. These describe the training design, without claiming an independently measured benefit from each component.
-
-## Research results
-
-The original PyTorch/TTA research runs recorded the following **macro Dice**, computed per scan and averaged across the cohort. These are historical development results, not measurements newly obtained from the distributed ONNX artifacts.
-
-| Cohort | Cases | Macro Dice | Interpretation |
-| --- | --- | --- | --- |
-| BHSD | 31 | **0.6551** | Model-selection cohort; one patient identifier prefix overlaps training records |
-| PhysioNet, positive cases | 36 | **0.5061** | Exploratory cohort consulted during development |
-
-BHSD was used for model selection and has the stated overlap, so it cannot serve as an independent test set. The PhysioNet result covers positive cases and was consulted during development; it does not establish independent performance or specificity on negative scans. No independent clinical benchmark or prospective validation is claimed.
-
-The original trainable checkpoint, full training runtime and evaluation datasets are not bundled. Fine-tuning remains unavailable in this public release.
-
-## Recorded application prediction
-
-![Recorded Baseline S FP32 prediction displayed in BrainHem Assist](../docs/images/clinical-workspace.png)
-
-*Actual application capture displaying a recorded FP32 Baseline S research prediction on 32 slices of the real NiiVue CT_Electrodes sample, using a separately configured CT pipeline. The sample is not a hemorrhage benchmark; the overlay is uncalibrated and is not evidence of diagnostic accuracy. [Sample attribution](../README.md#image-source).*
-
-The pink regions and displayed volume are predictions, not expert labels or ground truth.
-
-This demonstrates the connection between model output and the review interface. It does not mean the default application runs inference automatically on import.
+The timer includes CT reading, preprocessing, a single prediction pass and mask restoration; it excludes weight loading, file writing, job queues and API overhead. Operation counts use two FLOPs per MAC and exclude CLAHE, resampling, postprocessing and overlapping context-window overhead. These are not CPU ONNX or INT8 latency measurements.
 
 ## ONNX artifacts and quantization
 

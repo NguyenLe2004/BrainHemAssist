@@ -2,7 +2,7 @@
 
 A graduation capstone project for brain CT hemorrhage segmentation. The model work centers on **Baseline S — BiGRU–DE-UNeXt**, combining CT and contrast-enhanced inputs, multi-scale attention fusion, and context from neighboring slices.
 
-**[Explore the model: architecture, CT pipeline, research results and ONNX artifacts →](models/README.md)**
+**[Explore the model: architecture, benchmarks and ONNX artifacts →](models/README.md)**
 
 The accompanying web application supports CT viewing, annotation and revision review. Its inference connector requires separate configuration; uploading a scan does not automatically run the bundled model.
 

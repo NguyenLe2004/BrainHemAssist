@@ -34,7 +34,7 @@ Open **http://127.0.0.1:8000** and sign in with the account name/password config
 
 Upload requires the opt-in setting above; the default is disabled. No demo scans are seeded. Use data whose terms permit your intended use and keep all scan files and runtime databases outside Git. The README images use the real, openly licensed [NiiVue CT_Electrodes sample](https://github.com/niivue/niivue-demo-images#licenses); the volume itself is not bundled.
 
-Imported scans are viewable without an AI inference connector. Uploading does not run Baseline S automatically. Read the [model documentation](../models/README.md) for its architecture, CT preparation recipe and ONNX interface; connecting that pipeline to the web application requires an inference adapter.
+Imported scans are viewable without an AI inference connector. Uploading does not run Baseline S automatically. Read the [model documentation](../models/README.md) for its architecture and benchmark results; connecting that pipeline to the web application requires an inference adapter.
 
 The application pages are `/` (CT workspace), `/model-studio` (model/dataset management) and `/guide` (usage guide). The detailed model documentation is the `models/` page on GitHub.
 
@@ -77,13 +77,13 @@ The default data directory is relative to the backend's working directory. Set `
 
 ## ONNX inference
 
-Use Python 3.11 on a platform supported by ONNX Runtime 1.30.0 (Linux, Windows or Apple Silicon; this version has no macOS Intel wheel):
+From the repository root, use Python 3.11 on a platform supported by ONNX Runtime 1.30.0 (Linux, Windows or Apple Silicon; this version has no macOS Intel wheel):
 
 ```bash
 pip install -r requirements-model.txt
 ```
 
-After preparing paired tensors using the [model's CT pipeline](../models/README.md#ct-preparation-and-inference-pipeline):
+After preparing paired tensors using the [CT pipeline below](#ct-preparation-and-inference-pipeline):
 
 ```python
 from baseline import load_model
@@ -94,6 +94,30 @@ compact = load_model("s", precision="int8") # mixed precision, same interface
 ```
 
 The tensor loader does not read raw scans or restore scan geometry. Keep preprocessing, slice order and spatial restoration consistent with the model. FP32 is the default; the mixed-precision model requires validation on your own data before substitution.
+
+### CT preparation and inference pipeline
+
+The original research pipeline prepares a scan before passing tensors to the model:
+
+1. Preserve slice ordering and through-plane geometry, and crop the nonzero image region while recording its original coordinates.
+2. Clip CT intensities to **12–89 HU**. Normalize using mean **47.800434** and standard deviation **18.999517**, then resample the in-plane spacing to **0.488281 mm**.
+3. Reconstruct windowed HU from the normalized tensor and map it to `[0,1]` for Kornia CLAHE (clip limit **2.0**, grid **8 × 8**). Preserve saturated zero/one endpoints, then map the enhanced image back to the same fixed CT normalization range; do not normalize each slice independently.
+4. Run **512 × 512** spatial tiles with 50% overlap, blend predictions with Gaussian weights, and combine four XY mirror augmentations.
+5. Restore the logits to the original image geometry **before** selecting the mask by class `argmax`.
+
+Through-plane spacing is preserved; the sequence module supplies cross-slice context. Spatial restoration is necessary before interpreting a mask in the scan's original coordinates or measuring physical volume.
+
+These settings document the original pipeline. The public [`baseline`](../baseline/) package accepts prepared tensors; it does not bundle that complete CT preprocessing, tiling, augmentation or geometry-restoration pipeline. The web application's external inference connector is a separate integration and is disabled by default.
+
+### Published tensor interface
+
+| Tensor | Type and shape | Role |
+| --- | --- | --- |
+| `image` | Finite `float32`, `[D, 1, 512, 512]` | Prepared CT slice sequence |
+| `enhanced` | Finite `float32`, `[D, 1, 512, 512]` | Aligned CLAHE representation |
+| `logits` | `float32`, `[D, 2, 512, 512]` | Class 0: background; class 1: hemorrhage |
+
+Both inputs must have identical shapes. The loader accepts **1–128 ordered slices** per call. That interface limit is not an assurance that every sequence length or integration has been clinically validated. Install and use the tensor API separately from the web application; see the [ONNX installation above](#onnx-inference).
 
 ## Development checks
 
