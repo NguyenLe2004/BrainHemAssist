@@ -15,8 +15,13 @@ PRIVATE_SUFFIXES = (".md", ".nii", ".nii.gz", ".dcm", ".dicom", ".npy", ".npz",
                     ".safetensors", ".onnx", ".engine", ".plan", ".bhm", ".whl",
                     ".pem", ".key", ".p12", ".pfx", ".log", ".pid", ".jsonl",
                     ".csv", ".zip", ".tar", ".tar.gz", ".pyc")
-PUBLIC_BINARY = {"models/baseline_s.onnx": "92bc39b59ba8edd9f59241baa0b6ebe707690d92257cccc32c5933dbdc282ee5"}
-PUBLIC_DOCS = {"README.md"}
+PUBLIC_BINARY = {
+    "models/baseline_s.onnx": "92bc39b59ba8edd9f59241baa0b6ebe707690d92257cccc32c5933dbdc282ee5",
+    "docs/images/clinical-workspace.png": "3788ec4f2ad6af477de729244a19c1dc0c44ec1e00e27e5ba9c0480406523664",
+    "docs/images/annotation-workspace.png": "2ccbd59a2ef6288c790a2d7da9285faa2e476f69400b5f2453d1cfc2fb17e6ec",
+    "docs/images/model-studio.png": "082e4af12a1b898b0a70ce1e8652ccc5ed2bfa5bd65438199d6f9392e54a164b",
+}
+PUBLIC_DOCS = {"README.md", "models/README.md"}
 
 TEXT_SUFFIXES = {".py", ".js", ".jsx", ".mjs", ".css", ".html", ".json", ".txt",
                  ".rst", ".toml", ".ini", ".yaml", ".yml", ".pbtxt", ".Dockerfile"}
@@ -46,9 +51,9 @@ def check(strict=False):
             continue
         if rel.as_posix() in PUBLIC_BINARY:
             if hashlib.sha256(path.read_bytes()).hexdigest() != PUBLIC_BINARY[rel.as_posix()]:
-                problems.append(f"{rel}: public model checksum mismatch")
+                problems.append(f"{rel}: approved binary checksum mismatch")
             continue
-        if any(part in PRIVATE_DIRS for part in rel.parts):
+        if rel.as_posix() not in PUBLIC_DOCS and any(part in PRIVATE_DIRS for part in rel.parts):
             problems.append(f"{rel}: private directory")
         if rel.as_posix() not in PUBLIC_DOCS and path.name.lower().endswith(PRIVATE_SUFFIXES):
             problems.append(f"{rel}: private or binary extension")

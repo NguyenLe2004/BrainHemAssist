@@ -24,3 +24,5 @@ private-build
 releases
 
 !models/baseline_s.onnx
+!README.md
+!models/README.md

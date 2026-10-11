@@ -49,7 +49,7 @@ operator-secrets/
 *.whl
 *.zip
 *.tar*
-# Agent instructions, internal reports and deferred model documentation
+# Agent instructions and internal reports
 *.[mM][dD]
 *.[mM][dD][xX]
 *.[mM][aA][rR][kK][dD][oO][wW][nN]
@@ -64,4 +64,5 @@ releases/
 
 # Deliberately public documentation and the single approved artifact
 !/README.md
+!/models/README.md
 !/models/baseline_s.onnx

@@ -77,7 +77,7 @@ https://github.com/huggingface/pytorch-image-models
 No private architecture source or artifacts for model slots M/L are included.
 Their loaders return None. No dataset or patient image is included. A code
 license, dataset license and weight license are separate permissions; none
-is clinical-use approval. The owner will add model documentation separately.
+is clinical-use approval. Model interface and graph-derived details are documented in models/README.md.
 
 
 5. Optional MedSAM2 / SAM2 annotation integration

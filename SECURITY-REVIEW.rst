@@ -7,8 +7,8 @@ Scope and changes
 This review updates the clean public snapshot after the owner's request to fix
 publication issues. The owner has explicitly chosen to include Baseline S ONNX
 publicly, with a note that its graph and learned weights can be inspected and
-extracted. The approved artifact bytes were not changed. No GitHub push was
-performed, and no ZIP was created during this remediation.
+extracted. The approved artifact bytes were not changed. The corrected snapshot was subsequently committed and pushed to the owner's
+personal repository. No ZIP was created during this remediation.
 
 Removed .DS_Store and added Git/Docker ignore entries. Upgraded the vulnerable
 pytest pin from 8.3.5 to 9.1.1. CI now audits test requirements, verifies
@@ -59,7 +59,7 @@ SHA256SUMS was generated after the source and review notes were finalized. The
 manifest covers every public file except itself, including the approved ONNX.
 The final delivery is checked with strict publication policy, Gitleaks,
 shasum and staging in a disposable fresh repository. The Downloads source
-folder receives no Git metadata, commit or remote configuration from this work.
+folder now contains the clean publication Git history and personal remote.
 
 Reviewed static findings
 ------------------------
@@ -77,17 +77,18 @@ trusted local operator configuration.
 Publication policy
 ------------------
 
-README.md is the sole Markdown exception; models/baseline_s.onnx is the sole
+README.md and models/README.md are the only Markdown exceptions; models/baseline_s.onnx is the sole
 model artifact exception. Internal agent files, other model artifacts, patient
 images, environment secrets, databases and old Git history are excluded.
-Original SVG illustrations contain no clinical screenshots. M/L loaders remain
+Reviewed browser screenshots use a synthetic phantom without patient data. M/L loaders remain
 empty and their services unavailable. Fine-tuning remains unavailable in the
 shipped application. Dataset/annotation preparation remains available.
 
 Limitations
 -----------
 
-The GitHub workflow has not run remotely during remediation. No Docker image
+The initial GitHub workflow subsequently completed successfully on 2026-10-10
+(run 38025224437). No Docker image
 build/scan, GPU/TensorRT test, live PACS integration or Internet deployment was
 performed. The tensor loader is not a validated raw-CT preprocessing or spatial
 restoration pipeline. Version ranges can resolve differently in future
@@ -98,3 +99,30 @@ or resolve the provenance and distribution questions already recorded in
 LICENSE, NOTICE and THIRD-PARTY-NOTICES.txt. Those notices are retained. The
 review reports the scope of checks, not a guarantee against every vulnerability
 or model-data disclosure.
+
+Documentation and screenshot review — 2026-10-11
+-----------------------------------------------
+
+README now presents the project, quickstart and actual UI captures, with a
+separate model page at models/README.md. Two independent review agents checked
+repository navigation and ONNX facts against source and the bundled graph.
+The unused conceptual SVG assets were removed.
+
+Three PNG images were captured in Chrome from the public frontend build and
+backend using an isolated synthetic 256 x 256 x 40 demonstration phantom.
+The volume was created mathematically, without generative image tools or
+patient scans. Screenshots contain only a demo account and demo case metadata;
+no production deployment, clinical dataset, training benchmark or credential
+is shown. The initial annotation mask is empty and Model Studio's inference
+service is offline. Browser capture recorded no JavaScript page errors.
+PNG chunks are limited to IHDR, IDAT and IEND; no textual or EXIF metadata is
+present. Images and model artifact are permitted only at exact paths and hashes.
+
+Publication policy now permits exactly README.md and models/README.md as
+Markdown, while retaining credential scans for both. Seven regression checks
+passed for the model-document exception, credential rejection, unapproved
+Markdown/images, modified binary bytes and symlinks. The application and ONNX
+artifact bytes were not changed. Source policy, clean-export policy, Markdown
+link targets, manifest coverage/hashes and source secrets were checked before
+publication. The previous commit's GitHub CI completed successfully; this
+verification does not substitute for future dependency or deployment reviews.
