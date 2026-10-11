@@ -4,7 +4,7 @@ A brain CT research workspace for viewing scans, annotating regions, and reviewi
 
 ![BrainHem Assist CT workspace](docs/images/clinical-workspace.png)
 
-*Actual browser capture of the public application with isolated synthetic fixture data. The scan is a demonstration phantom, not patient data or a model prediction; this demo case is not seeded by default.*
+*Actual BrainHem Assist browser capture with the real NiiVue CT_Electrodes sample. The sample demonstrates CT viewing, not hemorrhage detection; no model inference was run. [Image source and attribution](#screenshot-source).*
 
 ## What is included
 
@@ -29,7 +29,7 @@ cp .env.example .env
 docker compose --env-file .env -f mvp/infra/compose.public.yaml up --build
 ```
 
-Open **http://127.0.0.1:8000**. Compose binds to localhost and the container runs as a non-root user. Upload, PACS and inference services require local configuration. For Python/Node source installation, see [PUBLISHING.rst](PUBLISHING.rst#source-installation).
+Open **http://127.0.0.1:8000**. Compose binds to localhost and the container runs as a non-root user. Upload, PACS and inference services require local configuration. To import a scan or install from Python/Node source, follow the [setup guide](docs/SETUP.md). Set `BRAINHEM_DIRECT_UPLOAD_ENABLED=true` in `.env` to enable local imports; it is disabled by default.
 
 ## Explore the model
 
@@ -39,13 +39,9 @@ The loader accepts two prepared `float32` tensors; it does not provide CT prepro
 
 ## Application views
 
-![Annotation workspace with a demo volume](docs/images/annotation-workspace.png)
+![Annotation workspace with a real CT sample](docs/images/annotation-workspace.png)
 
-*Annotation tools rendered by the application using the same synthetic phantom. The initial mask is empty.*
-
-![Model Studio in the public configuration](docs/images/model-studio.png)
-
-*Model Studio captured with no training runtime or external inference service configured. Case counts and records are synthetic screenshot fixtures; no model inference was run. These screenshots demonstrate the UI, not segmentation accuracy.*
+*Annotation workspace with the same real CT sample. The initial mask is empty; no prediction or expert label is implied.*
 
 ## Repository guide
 
@@ -56,17 +52,15 @@ The loader accepts two prepared `float32` tensors; it does not provide CT prepro
 | [`models/`](models/) | Baseline S artifact and detailed model documentation |
 | [`baseline/`](baseline/) | Verified ONNX loading and tensor inference interface |
 | [`tests/`](tests/) | Model interface tests; API tests are in `mvp/backend/tests/` |
-| [`scripts/`](scripts/) | Publication guard and checksum tools |
+| [`scripts/`](scripts/) | Publication guard |
 
-## Verification
+## Checks and development
 
-```bash
-python3 scripts/check_public_tree.py
-python3 scripts/generate_checksums.py --check
-sha256sum -c SHA256SUMS
-```
+[GitHub Actions](https://github.com/NguyenLe2004/BrainHemAssist/actions/workflows/security.yml) runs API/model tests, frontend build and logic checks, dependency audits, and source/history secret scans. See the [setup guide](docs/SETUP.md#development-checks) for local commands and [SECURITY.rst](SECURITY.rst) for deployment limits.
 
-On macOS, use `shasum -a 256 -c SHA256SUMS`. The `--strict` publication check is intended for a clean export without `.git`, dependencies or runtime data. CI also runs backend/model tests, frontend build and logic checks, dependency audits, and secret scans of source and Git history. See the [GitHub workflow](https://github.com/NguyenLe2004/BrainHemAssist/actions/workflows/security.yml), [verification record](SECURITY-REVIEW.rst), and [publication instructions](PUBLISHING.rst).
+## Screenshot source
+
+The screenshots show the public application with `CT_Electrodes.nii.gz`, a real CT sample distributed by [NiiVue](https://github.com/niivue/niivue-demo-images#licenses) from the Scientific Computing and Imaging Institute's [Seg3DData](https://github.com/CIBC-Internal/Seg3DData). The sample is distributed under MIT (Scientific Computing and Imaging Institute, University of Utah, 2015); see [the retained notice](LICENSES/Seg3DData.txt). Only UI screenshots are included, not the CT volume. They illustrate viewing and annotation, not a benchmark or a result produced by Baseline S.
 
 ## Research scope and rights
 
@@ -74,4 +68,4 @@ This is research software. Tensor smoke tests do not establish clinical accuracy
 
 The owner intentionally publishes the ONNX graph and embedded weights, which anyone downloading the repository can inspect and extract. Original project code and the model have no project-wide open-source license grant. Model provenance and redistribution rights remain unverified; preserve [LICENSE](LICENSE), [NOTICE](NOTICE), [third-party notices](THIRD-PARTY-NOTICES.txt) and [`LICENSES/`](LICENSES/).
 
-Credentials, patient data, internal reports and agent Markdown remain excluded by the publication policy. See [SECURITY.rst](SECURITY.rst) for security scope and deployment limits.
+Credentials, private patient data, scan volumes, internal reports and agent Markdown remain excluded by the publication policy. See [SECURITY.rst](SECURITY.rst) for security scope and deployment limits.

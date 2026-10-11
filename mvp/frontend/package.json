@@ -7,7 +7,6 @@
     "postinstall": "node scripts/patch-niivue-outline.mjs",
     "dev": "vite",
     "build": "vite build",
-    "smoke": "node scripts/smoke-ui.mjs",
     "preview": "vite preview --host 127.0.0.1"
   },
   "dependencies": {

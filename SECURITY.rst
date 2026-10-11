@@ -28,7 +28,7 @@ Mặc định và kiểm soát đã rà soát
   vào ONNX Runtime. Input phải là tensor float32 hữu hạn, cùng shape và nằm
   trong giới hạn của loader. Provider mặc định là CPU.
 * Script publication cho phép đúng artifact Baseline S có checksum đã chốt và
-  README.md, models/README.md và ảnh giao diện đã duyệt theo checksum; model
+  README.md, models/README.md, docs/SETUP.md và ảnh giao diện đã duyệt theo checksum; model
   khác, dữ liệu, file agent và Markdown nội bộ vẫn bị chặn.
 * Chế độ mở rộng model bị từ chối khi bật; policy và cache của bản public chỉ
   dùng giá trị false. Không có thuật toán inference riêng trong vị trí M/L.
@@ -58,10 +58,11 @@ Các integration tùy chọn có hành vi nạp dữ liệu riêng; rà soát n�
 phủ dịch vụ hoặc model bên ngoài được bổ sung sau. Authentication ứng dụng
 không thay thế bảo vệ PACS hoặc mạng DICOM.
 
-Loader Baseline S cung cấp giao diện tensor, chưa xác nhận một pipeline xử lý
-CT hoàn chỉnh hoặc preprocessing được kiểm định. Không kiểm nghiệm GPU,
-TensorRT, PACS, triển khai Internet hoặc dữ liệu bệnh nhân trong đợt rà soát
-này. Docker image chưa được build hoặc quét; CI GitHub của commit đầu đã chạy thành công ngày 2026-10-10. Kiểm thử tổng hợp không thay thế pentest hoặc xác nhận lâm sàng.
+Loader Baseline S cung cấp giao diện tensor, chưa xác nhận pipeline CT hoàn
+chỉnh. CI kiểm thử API, tensor model, frontend và quét dependency/source/history;
+kết quả có trong GitHub Actions. Các kiểm tra đó không xác nhận GPU/TensorRT,
+PACS ngoài hệ thống, Docker image hay hiệu quả lâm sàng. Không công bố scan,
+log, database hoặc báo cáo nội bộ trong Git.
 
 Quét tự động có phạm vi và thời điểm cụ thể. Cần chạy lại sau khi thay dependency,
 đổi artifact hoặc bổ sung tài liệu. Bản này giữ quyền tác giả của nhóm, chưa

@@ -81,9 +81,9 @@ Fine-tuning is unavailable. No compatible PT/PTH checkpoint, trainable implement
 | SHA-256 verification | Identity of the packaged artifact bytes |
 | Independent ONNX checker and recursive graph inspection | Valid graph structure and the artifact properties above |
 | [Model tests](../tests/test_model_loader.py) | CPU output shape, dtype and finiteness for one all-zero slice; input rejection and loader behavior |
-| [Security review](../SECURITY-REVIEW.rst) | Recorded verification scope, dates and platform limitations |
+| [Continuous integration](https://github.com/NguyenLe2004/BrainHemAssist/actions/workflows/security.yml) | Repeatable model/API tests, build checks and security scans |
 
-The prior private conversion comparisons have no bundled reference checkpoint or reproducible inputs. They are not a public accuracy benchmark. This repository provides no verified clinical dataset/split, Dice/IoU result, latency benchmark, training configuration or clinical evaluation. GPU execution and the entire permitted `D` range have not been established by the packaged smoke test.
+No reference training checkpoint or reproducible clinical benchmark is bundled. This repository provides no verified clinical dataset/split, Dice/IoU result, latency benchmark, training configuration or clinical evaluation. GPU execution and the entire permitted `D` range have not been established by the packaged smoke test.
 
 ## Provenance and publication
 

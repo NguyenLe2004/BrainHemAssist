@@ -3,25 +3,28 @@ import assert from "node:assert/strict";
 import { trackJob, rememberJob, recalledJob, jobMessage } from "../src/jobTracking.js";
 import { matchingDraft } from "../src/draftStore.js";
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-test("polling remains serial with slow responses",async()=>{
+test("polling remains serial with slow responses",{timeout:10000},async t=>{
  let active=0,max=0,calls=0;
- const stop=trackJob({interval:1,read:async()=>{active++;max=Math.max(max,active);await wait(12);active--;calls++;return {status:calls<3?"running":"succeeded"};},onJob:()=>{},onConnection:()=>{}});
- await wait(85);stop();assert.equal(max,1);assert.equal(calls,3);
+ let complete;const done=new Promise(resolve=>complete=resolve);
+ const stop=trackJob({interval:1,read:async()=>{active++;max=Math.max(max,active);await wait(12);active--;calls++;return {status:calls<3?"running":"succeeded"};},onJob:j=>{if(j.status==="succeeded")complete();},onConnection:()=>{}});
+ t.after(stop);await done;assert.equal(max,1);assert.equal(calls,3);
 });
-test("network outage reconnects the existing request",async()=>{
+test("network outage reconnects the existing request",{timeout:10000},async t=>{
  let calls=0,result,connections=[];
- const stop=trackJob({interval:1,maxDelay:2,read:async()=>{calls++;if(calls<3)throw Error("offline");return {id:"same-job",status:"succeeded"};},onJob:j=>result=j,onConnection:x=>connections.push(x)});
- await wait(35);stop();assert.equal(result.id,"same-job");assert.deepEqual(connections,[false,false,true]);
+ let complete;const done=new Promise(resolve=>complete=resolve);
+ const stop=trackJob({interval:1,maxDelay:2,read:async()=>{calls++;if(calls<3)throw Error("offline");return {id:"same-job",status:"succeeded"};},onJob:j=>{result=j;complete();},onConnection:x=>connections.push(x)});
+ t.after(stop);await done;assert.equal(result.id,"same-job");assert.deepEqual(connections,[false,false,true]);
 });
 test("stop discards late response of a previous case",async()=>{
  let release,called=0;
  const stop=trackJob({read:()=>new Promise(r=>release=r),onJob:()=>called++,onConnection:()=>{}});
  stop();release({status:"succeeded"});await wait(3);assert.equal(called,0);
 });
-test("retry_wait and service_wait remain tracked",async()=>{
+test("retry_wait and service_wait remain tracked",{timeout:10000},async t=>{
  const statuses=["service_wait","retry_wait","running","succeeded"],seen=[];
- const stop=trackJob({interval:1,read:async()=>({status:statuses.shift()}),onJob:j=>seen.push(j.status),onConnection:()=>{}});
- await wait(30);stop();assert.deepEqual(seen,["service_wait","retry_wait","running","succeeded"]);
+ let complete;const done=new Promise(resolve=>complete=resolve);
+ const stop=trackJob({interval:1,read:async()=>({status:statuses.shift()}),onJob:j=>{seen.push(j.status);if(j.status==="succeeded")complete();},onConnection:()=>{}});
+ t.after(stop);await done;assert.deepEqual(seen,["service_wait","retry_wait","running","succeeded"]);
 });
 test("remembered job is scoped by server user and case",()=>{
  const values=new Map(),storage={setItem:(k,v)=>values.set(k,v),getItem:k=>values.get(k),removeItem:k=>values.delete(k)};

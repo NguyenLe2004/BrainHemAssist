@@ -23,8 +23,9 @@ def write(policy, name, content):
     return path
 
 
-def test_model_documentation_exception_still_scans_credentials(policy):
-    doc = write(policy, "models/README.md", "Reviewed model documentation")
+@pytest.mark.parametrize("name", ["models/README.md", "docs/SETUP.md"])
+def test_documentation_exception_still_scans_credentials(policy, name):
+    doc = write(policy, name, "Reviewed public documentation")
     assert policy.check() == 0
     doc.write_text("-----BEGIN " + "PRIVATE KEY-----", encoding="utf-8")
     assert policy.check() == 1

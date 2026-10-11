@@ -17,15 +17,14 @@ PRIVATE_SUFFIXES = (".md", ".nii", ".nii.gz", ".dcm", ".dicom", ".npy", ".npz",
                     ".csv", ".zip", ".tar", ".tar.gz", ".pyc")
 PUBLIC_BINARY = {
     "models/baseline_s.onnx": "92bc39b59ba8edd9f59241baa0b6ebe707690d92257cccc32c5933dbdc282ee5",
-    "docs/images/clinical-workspace.png": "3788ec4f2ad6af477de729244a19c1dc0c44ec1e00e27e5ba9c0480406523664",
-    "docs/images/annotation-workspace.png": "2ccbd59a2ef6288c790a2d7da9285faa2e476f69400b5f2453d1cfc2fb17e6ec",
-    "docs/images/model-studio.png": "082e4af12a1b898b0a70ce1e8652ccc5ed2bfa5bd65438199d6f9392e54a164b",
+    "docs/images/clinical-workspace.png": "1f1d773343401c143b1acbeddf3781a495cde86a074ae1b72cd5c1758f6424ed",
+    "docs/images/annotation-workspace.png": "0730634455d9220f2e1aee623b39a8d470996e999073d8d09f5d95df738caea3",
 }
-PUBLIC_DOCS = {"README.md", "models/README.md"}
+PUBLIC_DOCS = {"README.md", "models/README.md", "docs/SETUP.md"}
 
 TEXT_SUFFIXES = {".py", ".js", ".jsx", ".mjs", ".css", ".html", ".json", ".txt",
                  ".rst", ".toml", ".ini", ".yaml", ".yml", ".pbtxt", ".Dockerfile"}
-SPECIAL_NAMES = {"LICENSE", "NOTICE", "SHA256SUMS", ".gitignore", ".dockerignore",
+SPECIAL_NAMES = {"LICENSE", "NOTICE", ".gitignore", ".dockerignore",
                  ".env.example", "Dockerfile", "Dockerfile.triton"}
 SECRETS = {
     "private key": re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----"),

@@ -66,3 +66,10 @@ releases/
 !/README.md
 !/models/README.md
 !/models/baseline_s.onnx
+
+# Public user setup documentation
+!/docs/SETUP.md
+# Local publication reports and source manifests
+SHA256SUMS
+SECURITY-REVIEW.rst
+PUBLISHING.rst
