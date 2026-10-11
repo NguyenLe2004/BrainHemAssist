@@ -31,7 +31,10 @@ are included. Refer to their own licenses when distributing an environment,
 application bundle or image. A requirements pin does not grant artifact rights.
 
 4. Baseline S artifact and unresolved provenance
-models/baseline_s.onnx is the only included model artifact. Original project
+Baseline S is included as models/baseline_s.onnx (FP32) and the derived
+models/baseline_s.int8.onnx (selective MatMul INT8, other blocks FP32).
+scripts/quantize_model.py reproduces the latter from the former; conversion
+does not add redistribution permissions. Original project
 copyright is retained; no new permission to use, modify or redistribute these
 weights is granted here. Full weight provenance, contributor rights, training
 data permissions and rights to distribute architecture-derived portions have
@@ -76,7 +79,7 @@ https://github.com/huggingface/pytorch-image-models
 
 No private architecture source or artifacts for model slots M/L are included.
 Their loaders return None. No dataset volumes are included. The separately
-licensed CT sample screenshots are described in section 7. A code license,
+licensed CT sample image are described in section 7. A code license,
 dataset license and weight license are separate permissions; none is
 clinical-use approval. Model details are documented in models/README.md.
 
@@ -115,13 +118,15 @@ This file records technical review findings and unresolved permissions.
 It does not certify that all copyright or licensing questions are resolved.
 
 7. CT screenshot sample
-The README screenshots display the real CT_Electrodes.nii.gz sample from
+The README capture displays the real CT_Electrodes.nii.gz sample from
 niivue/niivue-demo-images, which attributes it to CIBC-Internal/Seg3DData.
 The sample is distributed under MIT by the Scientific Computing and Imaging
 Institute, University of Utah (2015); the full notice is in
 LICENSES/Seg3DData.txt. The CT volume is not included in this repository.
-These images illustrate viewing and annotation only; no model inference was
-run and no hemorrhage accuracy is implied. This sample license does not
+The clinical workspace image shows a recorded Baseline S FP32 prediction on
+a 32-slice subset, prepared through a separately configured research pipeline.
+Its overlay is model output, not an expert label or clinical accuracy result.
+This sample license does not
 license the original project or Baseline S artifact.
 Image source: https://github.com/niivue/niivue-demo-images/blob/f6f98294c1fa89a3a32e8a44eab92368374150a0/CT_Electrodes.nii.gz
 Sample license: https://github.com/CIBC-Internal/Seg3DData/blob/cbe9eeabbfaeebdd6d05521ff31464e929491966/LICENSE

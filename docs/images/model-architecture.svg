@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="930" viewBox="0 0 1280 930" role="img" aria-labelledby="title desc">
+<title id="title">Baseline S: BiGRU–DE-UNeXt architecture</title>
+<desc id="desc">Two CT representations, multi-scale encoders and CBAM skips, six-slice bidirectional GRU context, and an upsampling decoder producing two-channel logits.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#61758b"/></marker></defs>
+<rect width="1280" height="930" fill="#f9fbff"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#22344b}.title{font-size:30px;font-weight:700}.subtitle{font-size:16px;fill:#54677e}.heading{font-size:17px;font-weight:700}.body{font-size:14px}.note{font-size:12px;fill:#54677e}.line{fill:none;stroke:#61758b;stroke-width:2;marker-end:url(#arrow)}.skip{stroke:#d39845;stroke-dasharray:7 5}</style>
+<text x="40" y="48" class="title" text-anchor="start">Baseline S · BiGRU–DE-UNeXt</text>
+<text x="40" y="77" class="subtitle" text-anchor="start">CT + CLAHE representations · multi-scale fusion · ordered slice context</text>
+<rect x="60" y="105" width="215" height="65" rx="12" fill="#eaf1fc" stroke="#759bc8" stroke-width="1.5"/>
+<text x="167.5" y="132.5" class="heading" text-anchor="middle">image</text>
+<text x="167.5" y="152.5" class="body" text-anchor="middle">Normalized CT · D × 1 × 512²</text>
+<rect x="335" y="105" width="215" height="65" rx="12" fill="#e7f5f1" stroke="#579a8c" stroke-width="1.5"/>
+<text x="442.5" y="132.5" class="heading" text-anchor="middle">enhanced</text>
+<text x="442.5" y="152.5" class="body" text-anchor="middle">CLAHE · same slice sequence</text>
+<text x="167" y="200" class="heading" text-anchor="middle">CT encoder</text>
+<text x="442" y="200" class="heading" text-anchor="middle">CLAHE encoder</text>
+<text x="737" y="200" class="heading" text-anchor="middle">Multi-scale fusion</text>
+<text x="1070" y="200" class="heading" text-anchor="middle">Decoder</text>
+<rect x="60" y="223" width="215" height="66" rx="12" fill="#eaf1fc" stroke="#759bc8" stroke-width="1.5"/>
+<text x="167.5" y="251.0" class="heading" text-anchor="middle">Conv encoder</text>
+<text x="167.5" y="271.0" class="body" text-anchor="middle">16 channels · 256 × 256</text>
+<path class="line " d="M167 170 L167 223"/>
+<rect x="335" y="223" width="215" height="66" rx="12" fill="#e7f5f1" stroke="#579a8c" stroke-width="1.5"/>
+<text x="442.5" y="251.0" class="heading" text-anchor="middle">Conv encoder</text>
+<text x="442.5" y="271.0" class="body" text-anchor="middle">16 channels · 256 × 256</text>
+<path class="line " d="M442 170 L442 223"/>
+<rect x="635" y="223" width="205" height="66" rx="12" fill="#fff2de" stroke="#d39845" stroke-width="1.5"/>
+<text x="737.5" y="251.0" class="heading" text-anchor="middle">Skip S1</text>
+<text x="737.5" y="271.0" class="body" text-anchor="middle">Concat → 1×1 → CBAM</text>
+<path class="line" d="M275 247 L295 247 L295 300 L590 300 L590 247 L635 247"/>
+<path class="line " d="M550 266 L635 266"/>
+<rect x="935" y="223" width="275" height="66" rx="12" fill="#eaf3f5" stroke="#699ba7" stroke-width="1.5"/>
+<text x="1072.5" y="251.0" class="heading" text-anchor="middle">16 channels · 256 × 256</text>
+<text x="1072.5" y="271.0" class="body" text-anchor="middle">Upsample + fused skip</text>
+<path class="line skip" d="M840 256 L935 256"/>
+<rect x="60" y="314" width="215" height="66" rx="12" fill="#eaf1fc" stroke="#759bc8" stroke-width="1.5"/>
+<text x="167.5" y="342.0" class="heading" text-anchor="middle">Conv encoder</text>
+<text x="167.5" y="362.0" class="body" text-anchor="middle">32 channels · 128 × 128</text>
+<path class="line " d="M167 289 L167 314"/>
+<rect x="335" y="314" width="215" height="66" rx="12" fill="#e7f5f1" stroke="#579a8c" stroke-width="1.5"/>
+<text x="442.5" y="342.0" class="heading" text-anchor="middle">Conv encoder</text>
+<text x="442.5" y="362.0" class="body" text-anchor="middle">32 channels · 128 × 128</text>
+<path class="line " d="M442 289 L442 314"/>
+<rect x="635" y="314" width="205" height="66" rx="12" fill="#fff2de" stroke="#d39845" stroke-width="1.5"/>
+<text x="737.5" y="342.0" class="heading" text-anchor="middle">Skip S2</text>
+<text x="737.5" y="362.0" class="body" text-anchor="middle">Concat → 1×1 → CBAM</text>
+<path class="line" d="M275 338 L295 338 L295 391 L590 391 L590 338 L635 338"/>
+<path class="line " d="M550 357 L635 357"/>
+<rect x="935" y="314" width="275" height="66" rx="12" fill="#eaf3f5" stroke="#699ba7" stroke-width="1.5"/>
+<text x="1072.5" y="342.0" class="heading" text-anchor="middle">32 channels · 128 × 128</text>
+<text x="1072.5" y="362.0" class="body" text-anchor="middle">Upsample + fused skip</text>
+<path class="line skip" d="M840 347 L935 347"/>
+<path class="line " d="M1072 314 L1072 289"/>
+<rect x="60" y="405" width="215" height="66" rx="12" fill="#eaf1fc" stroke="#759bc8" stroke-width="1.5"/>
+<text x="167.5" y="433.0" class="heading" text-anchor="middle">Conv encoder</text>
+<text x="167.5" y="453.0" class="body" text-anchor="middle">128 channels · 64 × 64</text>
+<path class="line " d="M167 380 L167 405"/>
+<rect x="335" y="405" width="215" height="66" rx="12" fill="#e7f5f1" stroke="#579a8c" stroke-width="1.5"/>
+<text x="442.5" y="433.0" class="heading" text-anchor="middle">Conv encoder</text>
+<text x="442.5" y="453.0" class="body" text-anchor="middle">128 channels · 64 × 64</text>
+<path class="line " d="M442 380 L442 405"/>
+<rect x="635" y="405" width="205" height="66" rx="12" fill="#fff2de" stroke="#d39845" stroke-width="1.5"/>
+<text x="737.5" y="433.0" class="heading" text-anchor="middle">Skip S3</text>
+<text x="737.5" y="453.0" class="body" text-anchor="middle">Concat → 1×1 → CBAM</text>
+<path class="line" d="M275 429 L295 429 L295 482 L590 482 L590 429 L635 429"/>
+<path class="line " d="M550 448 L635 448"/>
+<rect x="935" y="405" width="275" height="66" rx="12" fill="#eaf3f5" stroke="#699ba7" stroke-width="1.5"/>
+<text x="1072.5" y="433.0" class="heading" text-anchor="middle">128 channels · 64 × 64</text>
+<text x="1072.5" y="453.0" class="body" text-anchor="middle">Upsample + skip + token block</text>
+<path class="line skip" d="M840 438 L935 438"/>
+<path class="line " d="M1072 405 L1072 380"/>
+<rect x="60" y="496" width="215" height="66" rx="12" fill="#eaf1fc" stroke="#759bc8" stroke-width="1.5"/>
+<text x="167.5" y="524.0" class="heading" text-anchor="middle">Token / shifted-MLP</text>
+<text x="167.5" y="544.0" class="body" text-anchor="middle">160 channels · 32 × 32</text>
+<path class="line " d="M167 471 L167 496"/>
+<rect x="335" y="496" width="215" height="66" rx="12" fill="#e7f5f1" stroke="#579a8c" stroke-width="1.5"/>
+<text x="442.5" y="524.0" class="heading" text-anchor="middle">Token / shifted-MLP</text>
+<text x="442.5" y="544.0" class="body" text-anchor="middle">160 channels · 32 × 32</text>
+<path class="line " d="M442 471 L442 496"/>
+<rect x="635" y="496" width="205" height="66" rx="12" fill="#fff2de" stroke="#d39845" stroke-width="1.5"/>
+<text x="737.5" y="524.0" class="heading" text-anchor="middle">Skip S4</text>
+<text x="737.5" y="544.0" class="body" text-anchor="middle">Concat → 1×1 → CBAM</text>
+<path class="line" d="M275 520 L295 520 L295 573 L590 573 L590 520 L635 520"/>
+<path class="line " d="M550 539 L635 539"/>
+<rect x="935" y="496" width="275" height="66" rx="12" fill="#eaf3f5" stroke="#699ba7" stroke-width="1.5"/>
+<text x="1072.5" y="524.0" class="heading" text-anchor="middle">160 channels · 32 × 32</text>
+<text x="1072.5" y="544.0" class="body" text-anchor="middle">Upsample + skip + token block</text>
+<path class="line skip" d="M840 529 L935 529"/>
+<path class="line " d="M1072 496 L1072 471"/>
+<rect x="60" y="587" width="215" height="66" rx="12" fill="#eaf1fc" stroke="#759bc8" stroke-width="1.5"/>
+<text x="167.5" y="615.0" class="heading" text-anchor="middle">Token / shifted-MLP</text>
+<text x="167.5" y="635.0" class="body" text-anchor="middle">256 channels · 16 × 16</text>
+<path class="line " d="M167 562 L167 587"/>
+<rect x="335" y="587" width="215" height="66" rx="12" fill="#e7f5f1" stroke="#579a8c" stroke-width="1.5"/>
+<text x="442.5" y="615.0" class="heading" text-anchor="middle">Token / shifted-MLP</text>
+<text x="442.5" y="635.0" class="body" text-anchor="middle">256 channels · 16 × 16</text>
+<path class="line " d="M442 562 L442 587"/>
+<rect x="635" y="587" width="205" height="66" rx="12" fill="#fff2de" stroke="#d39845" stroke-width="1.5"/>
+<text x="737.5" y="615.0" class="heading" text-anchor="middle">Bottleneck fusion</text>
+<text x="737.5" y="635.0" class="body" text-anchor="middle">Concat 512 → project 256</text>
+<path class="line" d="M275 611 L295 611 L295 664 L590 664 L590 611 L635 611"/>
+<path class="line " d="M550 630 L635 630"/>
+<text x="310" y="705" class="note" text-anchor="middle">Separate early / token blocks; shared higher patch projections</text>
+<rect x="600" y="710" width="280" height="104" rx="12" fill="#eeeafb" stroke="#8b74b8" stroke-width="1.5"/>
+<text x="740.0" y="737.0" class="heading" text-anchor="middle">BiGRU-Lite context</text>
+<text x="740.0" y="757.0" class="body" text-anchor="middle">256 → 64 · forward + backward GRU</text>
+<text x="740.0" y="777.0" class="body" text-anchor="middle">6-slice windows · stride 3</text>
+<text x="740.0" y="797.0" class="body" text-anchor="middle">Shifted states exclude current slice</text>
+<path class="line " d="M737 653 L737 710"/>
+<rect x="925" y="710" width="290" height="104" rx="12" fill="#eeeafb" stroke="#8b74b8" stroke-width="1.5"/>
+<text x="1070.0" y="747.0" class="heading" text-anchor="middle">Bounded residual</text>
+<text x="1070.0" y="767.0" class="body" text-anchor="middle">Average 128-channel context → 256</text>
+<text x="1070.0" y="787.0" class="body" text-anchor="middle">F + 0.25 × tanh(α) × context</text>
+<path class="line " d="M880 762 L925 762"/>
+<path class="line" d="M 1070 710 L 1070 652 L 1235 652 L 1235 529 L 1210 529"/>
+<path class="line skip" d="M 840 620 L 1247 620 L 1247 774 L 1215 774"/>
+<rect x="930" y="105" width="280" height="66" rx="12" fill="#eaf3f5" stroke="#699ba7" stroke-width="1.5"/>
+<text x="1070.0" y="133.0" class="heading" text-anchor="middle">Output head</text>
+<text x="1070.0" y="153.0" class="body" text-anchor="middle">Upsample to 512² · 1×1 Conv: 16 → 2</text>
+<path class="line " d="M1072 223 L1072 171"/>
+<rect x="325" y="853" width="670" height="52" rx="12" fill="#eef1f5" stroke="#a7b5c5" stroke-width="1.5"/>
+<text x="660.0" y="884.0" class="heading" text-anchor="middle">Two-channel logits → restore CT geometry → argmax mask</text>
+<path class="line" d="M 1210 136 L 1260 136 L 1260 879 L 995 879"/>
+<text x="40" y="918" class="note" text-anchor="start">Solid arrows: main features / context   ·   Dashed arrows: skip / residual connections</text>
+</svg>

@@ -62,10 +62,11 @@ GEMINI*
 private-build/
 releases/
 
-# Deliberately public documentation and the single approved artifact
+# Deliberately public documentation and approved Baseline S formats
 !/README.md
 !/models/README.md
 !/models/baseline_s.onnx
+!/models/baseline_s.int8.onnx
 
 # Public user setup documentation
 !/docs/SETUP.md

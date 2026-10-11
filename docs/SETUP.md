@@ -34,7 +34,9 @@ Open **http://127.0.0.1:8000** and sign in with the account name/password config
 
 Upload requires the opt-in setting above; the default is disabled. No demo scans are seeded. Use data whose terms permit your intended use and keep all scan files and runtime databases outside Git. The README images use the real, openly licensed [NiiVue CT_Electrodes sample](https://github.com/niivue/niivue-demo-images#licenses); the volume itself is not bundled.
 
-Imported scans are viewable without an AI inference connector. Uploading does not run `baseline_s.onnx` automatically. The separate [model documentation](../models/README.md) explains the prepared-tensor API and the missing CT preprocessing boundary.
+Imported scans are viewable without an AI inference connector. Uploading does not run Baseline S automatically. Read the [model documentation](../models/README.md) for its architecture, CT preparation recipe and ONNX interface; connecting that pipeline to the web application requires an inference adapter.
+
+The application pages are `/` (CT workspace), `/model-studio` (model/dataset management) and `/guide` (usage guide). The detailed model documentation is the `models/` page on GitHub.
 
 ### Stop or inspect the application
 
@@ -71,7 +73,27 @@ cd mvp/backend
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-The default data directory is relative to the backend's working directory. Set `BRAINHEM_DATA_DIR` to a dedicated absolute directory if needed. Run the model example separately on a platform supported by the pinned ONNX Runtime.
+The default data directory is relative to the backend's working directory. Set `BRAINHEM_DATA_DIR` to a dedicated absolute directory if needed.
+
+## ONNX inference
+
+Use Python 3.11 on a platform supported by ONNX Runtime 1.30.0 (Linux, Windows or Apple Silicon; this version has no macOS Intel wheel):
+
+```bash
+pip install -r requirements-model.txt
+```
+
+After preparing paired tensors using the [model's CT pipeline](../models/README.md#ct-preparation-and-inference-pipeline):
+
+```python
+from baseline import load_model
+
+model = load_model("s")                     # FP32 reference
+logits = model.predict(image, enhanced)      # prepared float32 CT/CLAHE tensors
+compact = load_model("s", precision="int8") # mixed precision, same interface
+```
+
+The tensor loader does not read raw scans or restore scan geometry. Keep preprocessing, slice order and spatial restoration consistent with the model. FP32 is the default; the mixed-precision model requires validation on your own data before substitution.
 
 ## Development checks
 

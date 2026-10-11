@@ -29,7 +29,7 @@ jobs:
           "$RUNNER_TEMP/gitleaks" dir . --redact --no-banner
           "$RUNNER_TEMP/gitleaks" git . --log-opts=--all --redact --no-banner
       - name: Install test and audit dependencies
-        run: pip install -r mvp/backend/requirements-dev.txt -r requirements-model.txt bandit==1.9.4 pip-audit==2.10.1
+        run: pip install -r mvp/backend/requirements-dev.txt -r requirements-quantization.txt bandit==1.9.4 pip-audit==2.10.1
       - name: Test API and access controls
         working-directory: mvp/backend
         run: python -m pytest -q
@@ -41,6 +41,12 @@ jobs:
         run: pip-audit -r mvp/backend/requirements-dev.txt --progress-spinner off
       - name: Audit model requirements
         run: pip-audit -r requirements-model.txt --progress-spinner off
+      - name: Audit quantization requirements
+        run: pip-audit -r requirements-quantization.txt --progress-spinner off
+      - name: Reproduce the mixed-precision model
+        run: |
+          python scripts/quantize_model.py --output "$RUNNER_TEMP/baseline_s.int8.onnx"
+          cmp models/baseline_s.int8.onnx "$RUNNER_TEMP/baseline_s.int8.onnx"
       - name: Detect high severity Python findings
         run: bandit -r mvp/backend/app baseline --severity-level high
       - name: Install and audit frontend

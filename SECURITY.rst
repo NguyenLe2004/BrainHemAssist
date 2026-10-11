@@ -1,7 +1,7 @@
 Security và phạm vi public
 ==========================
 
-Bản source này kèm duy nhất models/baseline_s.onnx. M/L là vị trí mở rộng có
+Bản source này kèm Baseline S ở hai dạng ONNX FP32 và mixed precision INT8. M/L là vị trí mở rộng có
 hàm load trả None; không kèm implementation hoặc artifact. Không đưa dữ liệu
 bệnh nhân, credential hay source riêng vào repository hoặc issue công khai.
 Khi phát hiện lỗi, dùng kênh riêng do chủ sở hữu repository cung cấp. Chưa có
@@ -39,7 +39,7 @@ Giới hạn bảo mật và triển khai
 Baseline S ONNX là artifact có thể đọc: người tải được graph, toán tử, kích
 thước tensor và trọng số. Đổi tên file hoặc node không ngăn suy ra cấu trúc
 baseline. Không có cam kết chống trích xuất model hoặc bảo vệ trọng số đã public.
-Chủ dự án đã chọn công khai artifact này; bản phát hành giữ nguyên ONNX và ghi
+Chủ dự án đã chọn công khai hai dạng artifact này; tài liệu ghi
 rõ việc người tải có thể đọc hoặc trích xuất cấu trúc và trọng số.
 Checksum xác nhận byte được đóng gói; không chứng nhận hiệu quả y khoa, quyền
 phân phối, nguồn training data hay việc model không ghi nhớ dữ liệu. Xem

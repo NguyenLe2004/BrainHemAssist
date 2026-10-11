@@ -17,8 +17,8 @@ PRIVATE_SUFFIXES = (".md", ".nii", ".nii.gz", ".dcm", ".dicom", ".npy", ".npz",
                     ".csv", ".zip", ".tar", ".tar.gz", ".pyc")
 PUBLIC_BINARY = {
     "models/baseline_s.onnx": "92bc39b59ba8edd9f59241baa0b6ebe707690d92257cccc32c5933dbdc282ee5",
-    "docs/images/clinical-workspace.png": "1f1d773343401c143b1acbeddf3781a495cde86a074ae1b72cd5c1758f6424ed",
-    "docs/images/annotation-workspace.png": "0730634455d9220f2e1aee623b39a8d470996e999073d8d09f5d95df738caea3",
+    "models/baseline_s.int8.onnx": "e4e81c678bfdd920a7070ffbdca20eb01dc77da2a16478b7012b47819c4f8845",
+    "docs/images/clinical-workspace.png": "843cff8fa937c11d519c78114d1cd51386b391ffd832d9f96febb19ba2b7b86f",
 }
 PUBLIC_DOCS = {"README.md", "models/README.md", "docs/SETUP.md"}
 
