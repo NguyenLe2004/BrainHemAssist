@@ -32,7 +32,7 @@ Open **http://127.0.0.1:8000** and sign in with the account name/password config
 2. Select your own de-identified NIfTI (`.nii`, `.nii.gz`) or DICOM input. A DICOM study can be supplied as files or a ZIP; avoid mixing studies/series.
 3. Open the case under **Dữ liệu** to view slices and use **Gán nhãn** for annotation and review.
 
-Upload requires the opt-in setting above; the default is disabled. No demo scans are seeded. Use data whose terms permit your intended use and keep all scan files and runtime databases outside Git. The README images use the real, openly licensed [NiiVue CT_Electrodes sample](https://github.com/niivue/niivue-demo-images#licenses); the volume itself is not bundled.
+Upload requires the opt-in setting above; the default is disabled. No demo scans are seeded. Use data whose terms permit your intended use and keep all scan files and runtime databases outside Git. The application capture uses the real, openly licensed [NiiVue CT_Electrodes sample](https://github.com/niivue/niivue-demo-images#licenses); the volume itself is not bundled.
 
 Imported scans are viewable without an AI inference connector. Uploading does not run Baseline S automatically. Read the [model documentation](../models/README.md) for its architecture and benchmark results; connecting that pipeline to the web application requires an inference adapter.
 
@@ -118,6 +118,18 @@ These settings document the original pipeline. The public [`baseline`](../baseli
 | `logits` | `float32`, `[D, 2, 512, 512]` | Class 0: background; class 1: hemorrhage |
 
 Both inputs must have identical shapes. The loader accepts **1–128 ordered slices** per call. That interface limit is not an assurance that every sequence length or integration has been clinically validated. Install and use the tensor API separately from the web application; see the [ONNX installation above](#onnx-inference).
+
+### Connect an external inference command
+
+Provide your own script implementing the complete CT pipeline, then set `BRAINHEM_INFERENCE_COMMAND` in `.env`. For example, with operator-provided paths:
+
+```dotenv
+BRAINHEM_INFERENCE_COMMAND="/opt/ct-runtime/bin/python /opt/ct-pipeline/predict.py --input {input} --output {output}"
+```
+
+The application splits the command into arguments and launches it without a shell. `{input}` is the imported CT NIfTI path and `{output}` is the required output path; `{output_dir}` and `{job_id}` are also available. The command must finish successfully and write a binary NIfTI mask (0: background, 1: hemorrhage) at `{output}`, preserving the input's shape, affine and slice ordering after restoring scan geometry. The operator must validate the output and pipeline; the bundled tensor loader alone does not implement this command.
+
+For Docker, the runtime, script, dependencies and model files must be installed or mounted inside the application container at the configured paths, with access to the application's input and output files. Host paths alone are insufficient. The public Compose file does not supply this external pipeline; inference stays unconfigured until the operator provides it.
 
 ## Development checks
 

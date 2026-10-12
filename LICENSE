@@ -1,9 +1,10 @@
 BrainHem Assist — license status
 
-The project owner has not selected an open-source license for the original
-BrainHem source in this snapshot. All rights in that original source remain
-with their respective copyright holders. This file grants no blanket right to
-use, redistribute, sublicense, or create derivative works of that source.
+The project owner publishes the original BrainHem code, model artifacts and
+architecture diagram in this snapshot without selecting an open-source license.
+All rights in those original contributions remain with their respective
+copyright holders. This file grants no blanket right to
+use, redistribute, sublicense, or create derivative works of those contributions.
 
 Third-party portions retain their own licenses and notices. The absence of a
 project-wide grant does not revoke permissions already granted by those
@@ -11,5 +12,5 @@ upstream licenses. See NOTICE, THIRD-PARTY-NOTICES.txt and LICENSES/.
 
 Public hosting on GitHub is subject to GitHub's Terms of Service, including
 its provisions on viewing and forking. Public visibility alone is not an
-open-source license. The owner must verify ownership and contributor rights
-before adding any future project-wide license.
+open-source license. Any future project-wide license must preserve applicable
+third-party terms.

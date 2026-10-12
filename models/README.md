@@ -23,7 +23,7 @@ BHSD was used for checkpoint selection and has one patient-identifier prefix ove
 
 ## Model comparison
 
-The MONAI and BiGRU rows use BHSD 31 scans and PhysioNet 36 positive scans, reporting **per-scan macro Dice**. The original DE-UNeXt reference is from an earlier project evaluation.
+The MONAI and BiGRU rows use BHSD 31 scans and PhysioNet 36 positive scans, reporting **per-scan macro Dice**. BiGRU uses XY mirror TTA; the MONAI runs use no TTA. The original DE-UNeXt reference is from an earlier project evaluation.
 
 | Model / configuration | Parameters (M) | BHSD Dice | PhysioNet Dice |
 | --- | ---: | ---: | ---: |
@@ -76,4 +76,4 @@ Run these commands from the repository root in the environment described by the 
 
 ## Rights and provenance
 
-The published graphs and weights can be inspected. Original model artifacts have no new open-source license grant; complete provenance and redistribution rights remain unverified. Preserve [LICENSE](../LICENSE), [NOTICE](../NOTICE) and [third-party notices](../THIRD-PARTY-NOTICES.txt), which retain the upstream source-lineage references.
+The project owner publishes these inspectable graphs and weights without an open-source license grant for the original model artifacts. Third-party notices and conditional upstream source-lineage references are retained in [LICENSE](../LICENSE), [NOTICE](../NOTICE) and [third-party notices](../THIRD-PARTY-NOTICES.txt).

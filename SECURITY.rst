@@ -4,8 +4,11 @@ Security và phạm vi public
 Bản source này kèm Baseline S ở hai dạng ONNX FP32 và mixed precision INT8. M/L là vị trí mở rộng có
 hàm load trả None; không kèm implementation hoặc artifact. Không đưa dữ liệu
 bệnh nhân, credential hay source riêng vào repository hoặc issue công khai.
-Khi phát hiện lỗi, dùng kênh riêng do chủ sở hữu repository cung cấp. Chưa có
-email hoặc URL tiếp nhận security được chủ sở hữu xác nhận.
+Để báo lỗi bảo mật riêng, dùng nút Report a vulnerability tại
+https://github.com/NguyenLe2004/BrainHemAssist/security/advisories khi chủ repo
+bật Private vulnerability reporting sau khi chuyển public. Nếu nút chưa có,
+mở issue tại https://github.com/NguyenLe2004/BrainHemAssist/issues chỉ để yêu cầu
+kênh liên hệ riêng; không đăng chi tiết khai thác, token hoặc dữ liệu bệnh nhân.
 
 Mặc định và kiểm soát đã rà soát
 ------------------------------
@@ -24,6 +27,10 @@ Mặc định và kiểm soát đã rà soát
   nhận request HTTPS.
 * Dev server và Compose publish port tại loopback. Docker app chạy không phải
   root, bỏ Linux capabilities và đặt no-new-privileges.
+* Tổng request body bị giới hạn trước khi parser multipart lưu file tạm;
+  giới hạn bằng quota upload cộng 1 MiB cho metadata. Từng file và tổng các file
+  DICOM vẫn được kiểm riêng. Mask phải đúng kích thước, affine và giới hạn voxel
+  của CT nguồn trước khi đọc hoặc chuẩn hóa dữ liệu voxel.
 * Baseline S loader kiểm SHA-256, giới hạn kích thước file và nạp bytes đã kiểm
   vào ONNX Runtime. Input phải là tensor float32 hữu hạn, cùng shape và nằm
   trong giới hạn của loader. Provider mặc định là CPU.
@@ -41,9 +48,10 @@ thước tensor và trọng số. Đổi tên file hoặc node không ngăn suy 
 baseline. Không có cam kết chống trích xuất model hoặc bảo vệ trọng số đã public.
 Chủ dự án đã chọn công khai hai dạng artifact này; tài liệu ghi
 rõ việc người tải có thể đọc hoặc trích xuất cấu trúc và trọng số.
-Checksum xác nhận byte được đóng gói; không chứng nhận hiệu quả y khoa, quyền
-phân phối, nguồn training data hay việc model không ghi nhớ dữ liệu. Xem
-NOTICE và THIRD-PARTY-NOTICES.txt về các quyền chưa xác minh.
+Checksum xác nhận byte được đóng gói; không chứng nhận hiệu quả y khoa hay việc
+model không ghi nhớ dữ liệu. Chủ dự án công bố code, model và hình kiến trúc
+của mình; xem LICENSE, NOTICE và THIRD-PARTY-NOTICES.txt về phạm vi cấp phép và
+các thành phần bên thứ ba.
 
 Không expose dev server trực tiếp lên Internet. Truy cập từ xa cần HTTPS,
 reverse proxy và host/CORS phù hợp. Nếu cần nhận địa chỉ client từ proxy, cấu

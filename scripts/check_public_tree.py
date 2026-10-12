@@ -40,12 +40,12 @@ def check(strict=False):
     problems = []
     for path in sorted(ROOT.rglob("*")):
         rel = path.relative_to(ROOT)
+        if path.is_symlink():
+            problems.append(f"{rel}: symlink is not allowed")
+            continue
         if any(part in LOCAL_BUILD or part.startswith(".venv") for part in rel.parts):
             if strict and path.is_file():
                 problems.append(f"{rel}: local build file in export")
-            continue
-        if path.is_symlink():
-            problems.append(f"{rel}: symlink is not allowed")
             continue
         if not path.is_file():
             continue

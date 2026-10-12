@@ -1,5 +1,5 @@
 {
-  "review_scope": "Baseline S source-lineage references and optional annotation integration; no complete weight/data rights clearance. Reviewed upstream commit is a comparison snapshot, not proof of historical local import unless explicitly stated.",
+  "review_scope": "Baseline S source-lineage references and optional annotation integration. Original code, model artifacts and diagram are published by the project owner. Reviewed upstream commits are comparison snapshots, not proof of historical local imports unless explicitly stated.",
   "components": [
     {
       "component": "UNeXt",
@@ -99,7 +99,7 @@
     }
   ],
   "weight_rights": {
-    "Baseline S": "Unverified ownership, inherited rights, training-data permissions and artifact redistribution rights. No license grant added.",
+    "Baseline S": "Published by the project owner without an open-source license grant for original model artifacts. Third-party source-lineage references are retained; historical imports and applicability remain unconfirmed.",
     "MedSAM2": {
       "shipped": false,
       "model_card_reference": "https://huggingface.co/wanglab/MedSAM2/blob/e4a6f35edd7e091619cbc0750f462f1574e23955/README.md",

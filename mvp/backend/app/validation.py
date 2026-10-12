@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import gzip
+import math
 import struct
 from pathlib import Path
 from typing import Any
@@ -45,19 +46,30 @@ class InvalidMaskError(InvalidNifti):
     pass
 
 
-def normalize_binary_annotation(path: Path) -> bool:
+def _validate_spatial_shape(image, error_type=InvalidNifti):
+    shape = image.shape
+    if len(shape) != 3 or any(d <= 0 for d in shape):
+        raise error_type(f"Image must be strictly 3D with positive spatial dimensions, got {shape}")
+    # Python integers cannot overflow on dimensions supplied by a NIfTI-2 header.
+    total_voxels = math.prod(int(d) for d in shape)
+    if total_voxels > 200_000_000:
+        raise error_type(f"Image exceeds maximum voxel threshold ({total_voxels} voxels, max 200M)")
+
+
+def normalize_binary_annotation(path: Path, source_path: Path) -> bool:
     """Canonicalize a single-class annotation to binary foreground in-place.
 
     BrainHem has one foreground class. NiiVue and older cached browser bundles
     can expose temporary positive values while serializing a stroke, so every
     finite positive value is foreground for both drafts and approved revisions.
-    Geometry, affine and all other mask validation still run afterward.
+    Check bounds and source geometry before reading any mask voxels. Binary
+    labels and all other revision validation still run afterward.
     """
     import nibabel as nib
     import numpy as np
 
+    _, image, _ = _load_mask_geometry(source_path, path)
     try:
-        image = nib.load(path)
         data = np.asanyarray(image.dataobj)
     except Exception as exc:
         raise InvalidMaskError(f"Cannot read mask NIfTI: {exc}") from exc
@@ -95,15 +107,8 @@ def compute_canonical_nifti_digest(path: Path) -> str:
     except Exception as exc:
         raise InvalidNifti(f"Failed to load NIfTI image: {exc}") from exc
 
+    _validate_spatial_shape(img)
     shape = img.shape
-    if len(shape) != 3:
-        raise InvalidNifti(f"Source must be strictly 3D NIfTI, got {len(shape)}D with shape {shape}")
-    if any(d <= 0 for d in shape):
-        raise InvalidNifti(f"Invalid non-positive dimensions in shape {shape}")
-
-    total_voxels = int(np.prod(shape))
-    if total_voxels > 200_000_000:
-        raise InvalidNifti(f"Image exceeds maximum voxel threshold ({total_voxels} voxels, max 200M)")
 
     affine = np.asanyarray(img.affine, dtype=np.float64)
     if not np.all(np.isfinite(affine)):
@@ -139,15 +144,8 @@ def extract_nifti_geometry(path: Path) -> dict[str, Any]:
     except Exception as exc:
         raise InvalidNifti(f"Failed to load NIfTI geometry: {exc}") from exc
 
+    _validate_spatial_shape(img)
     shape = img.shape
-    if len(shape) != 3:
-        raise InvalidNifti(f"Source must be strictly 3D NIfTI, got {len(shape)}D with shape {shape}")
-    if any(d <= 0 for d in shape):
-        raise InvalidNifti(f"Invalid non-positive dimensions: {shape}")
-
-    total_voxels = int(np.prod(shape))
-    if total_voxels > 200_000_000:
-        raise InvalidNifti(f"Image exceeds maximum voxel threshold ({total_voxels} voxels, max 200M)")
 
     affine = np.asanyarray(img.affine, dtype=np.float64)
     if not np.all(np.isfinite(affine)):
@@ -169,7 +167,7 @@ def extract_nifti_geometry(path: Path) -> dict[str, Any]:
     }
 
 
-def validate_mask_against_source(source_path: Path, mask_path: Path) -> dict[str, Any]:
+def _load_mask_geometry(source_path: Path, mask_path: Path):
     import nibabel as nib
     import numpy as np
 
@@ -183,10 +181,8 @@ def validate_mask_against_source(source_path: Path, mask_path: Path) -> dict[str
     except Exception as exc:
         raise InvalidMaskError(f"Cannot read mask NIfTI: {exc}") from exc
 
-    if len(source_img.shape) != 3:
-        raise InvalidNifti(f"Source image must be strictly 3D, got {len(source_img.shape)}D with shape {source_img.shape}")
-    if len(mask_img.shape) != 3:
-        raise InvalidMaskError(f"Mask must be strictly 3D, got {len(mask_img.shape)}D with shape {mask_img.shape}")
+    _validate_spatial_shape(source_img)
+    _validate_spatial_shape(mask_img, InvalidMaskError)
 
     source_shape = tuple(int(s) for s in source_img.shape)
     mask_shape = tuple(int(s) for s in mask_img.shape)
@@ -208,6 +204,14 @@ def validate_mask_against_source(source_path: Path, mask_path: Path) -> dict[str
     if not np.isfinite(voxel_vol_mm3) or voxel_vol_mm3 < 1e-9:
         raise InvalidNifti(f"Source affine has singular or invalid determinant: {voxel_vol_mm3}")
 
+    return source_img, mask_img, voxel_vol_mm3
+
+
+def validate_mask_against_source(source_path: Path, mask_path: Path) -> dict[str, Any]:
+    import numpy as np
+
+    source_img, mask_img, voxel_vol_mm3 = _load_mask_geometry(source_path, mask_path)
+
     try:
         mask_data = np.asanyarray(mask_img.dataobj)
     except Exception as exc:
@@ -228,7 +232,7 @@ def validate_mask_against_source(source_path: Path, mask_path: Path) -> dict[str
     volume_ml = round(voxel_count * voxel_vol_mm3 / 1000.0, 4)
 
     return {
-        "shape": list(source_shape),
+        "shape": list(source_img.shape),
         "zooms": [float(z) for z in source_img.header.get_zooms()[:3]],
         "affine": source_img.affine.tolist(),
         "voxel_count": voxel_count,

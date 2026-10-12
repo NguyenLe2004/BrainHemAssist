@@ -51,6 +51,7 @@ from starlette.routing import Match
 from .annotation_store import AnnotationStore, RevisionConflictError
 from .demo_preparation import prepare_demo49
 from .config import Settings
+from .request_limits import RequestBodyLimit
 from .inference import CommandInferenceAdapter
 from .models import (
     AnnotationCase,
@@ -431,6 +432,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             return feedback_service.submit(payload.model_dump(), actor, client_key)
         except FeedbackLimitError as exc:
             raise HTTPException(status_code=429, detail=str(exc)) from exc
+
+    # Bound the whole incoming body before FastAPI parses multipart uploads.
+    # File limits remain enforced separately; allow 1 MiB for form metadata.
+    app.add_middleware(RequestBodyLimit, maximum=settings.max_upload_bytes + 1024 * 1024)
 
     if settings.cors_origins:
         app.add_middleware(
@@ -1508,7 +1513,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             # This is a single-class editor. Canonicalize every finite positive
             # drawing value to foreground before validation so neither NiiVue's
             # temporary labels nor a stale browser bundle can leak into storage.
-            normalize_binary_annotation(temp_mask)
+            source_path = annotation_store.get_source_path(case_id)
+            if not source_path or not source_path.is_file():
+                raise HTTPException(status_code=404, detail="Case source CT file not found")
+            normalize_binary_annotation(temp_mask, source_path)
             revision = annotation_store.save_revision(
                 case_id=case_id,
                 operation_id=operation_id,
@@ -1769,7 +1777,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         output_path = temp_dir / "preview.nii.gz"
         try:
             await _save_upload(file, seed_path, settings.max_upload_bytes)
-            normalize_binary_annotation(seed_path)
+            normalize_binary_annotation(seed_path, source_path)
             validate_mask_against_source(source_path, seed_path)
             metadata = await asyncio.to_thread(
                 propagator.predict, source_path, seed_path, output_path

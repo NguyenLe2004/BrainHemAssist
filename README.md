@@ -1,6 +1,6 @@
 # BrainHem Assist
 
-A graduation capstone project for brain CT hemorrhage segmentation. The model work centers on **Baseline S — BiGRU–DE-UNeXt**, combining CT and contrast-enhanced inputs, multi-scale attention fusion, and context from neighboring slices.
+A graduation capstone project for brain CT hemorrhage segmentation. The model work centers on **Baseline S — BiGRU–DE-UNeXt**, combining paired CT and CLAHE-enhanced inputs, multi-scale attention fusion, and context from neighboring slices.
 
 **[Explore the model: architecture, benchmarks and ONNX artifacts →](models/README.md)**
 
@@ -40,6 +40,6 @@ The real CT sample comes from [NiiVue's demo images](https://github.com/niivue/n
 
 ## Research scope and rights
 
-This is research software. Historical model results and the displayed prediction are not independent clinical validation. The published ONNX graphs and weights are inspectable. Original project code and model artifacts have no project-wide open-source license grant; preserve [LICENSE](LICENSE), [NOTICE](NOTICE) and [third-party notices](THIRD-PARTY-NOTICES.txt). Complete model provenance and redistribution rights remain unverified.
+This is research software. Historical model results and the displayed prediction are not independent clinical validation. The project owner publishes the original code, model artifacts and architecture diagram; no project-wide open-source license is granted for those contributions. The ONNX graphs and weights are inspectable. Third-party components retain their own terms; see [LICENSE](LICENSE), [NOTICE](NOTICE) and [third-party notices](THIRD-PARTY-NOTICES.txt).
 
 Credentials, private patient data, scan volumes, internal reports and agent Markdown remain excluded from publication.

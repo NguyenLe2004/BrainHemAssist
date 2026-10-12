@@ -1,8 +1,9 @@
 BrainHem Assist — Baseline S publication snapshot
 
-The project owner retains copyright in original project contributions and
-has not selected an open-source license. LICENSE grants no blanket rights
-to the original source or the included Baseline S model artifact.
+The project owner publishes the original code, Baseline S model artifacts and
+architecture diagram without selecting an open-source license. LICENSE grants
+no blanket rights to those original contributions. Third-party portions retain
+their own licenses and notices.
 
 The application integrates React, NiiVue, FastAPI and other dependencies.
 Their copyrights and license terms remain with their respective owners.
@@ -14,17 +15,15 @@ this fragment or a bundle containing it.
 This snapshot includes Baseline S in two inference formats:
 models/baseline_s.onnx (FP32) and models/baseline_s.int8.onnx (mixed precision).
 The latter is derived from the former by scripts/quantize_model.py and
-inherits the same provenance and rights limitations.
-Its graph identifiers were normalized for publication; this does not hide
-the graph topology, operators or learned weights. Model slots M and L have
-no implementation or artifacts in this snapshot.
+adds no new license grant. Both formats expose graph topology, operators and
+learned weights. Model slots M and L have no implementation or artifacts in
+this snapshot.
 
-The complete provenance and distribution rights of Baseline S weights,
-architecture-derived portions and training data have not been verified.
-Possible upstream source-license references are retained in
-LICENSES/model-provenance/ and described in THIRD-PARTY-NOTICES.txt.
-Their inclusion records review leads; it is not a claim that one of those
-licenses grants rights to this complete ONNX artifact.
+Upstream source-lineage references are retained in LICENSES/model-provenance/
+and described in THIRD-PARTY-NOTICES.txt. Historical imports for these references
+remain unconfirmed; their inclusion does not assign an upstream license to the
+complete ONNX artifact. Applicable third-party terms remain in force for any
+covered portions.
 
 No medical scan volumes, private model source, local account information or
 prior private Git history are included. The application capture displays the

@@ -51,3 +51,12 @@ def test_approved_path_does_not_allow_symlink(policy):
     doc.parent.mkdir()
     doc.symlink_to(target)
     assert policy.check() == 1
+
+
+@pytest.mark.parametrize("strict", [False, True])
+@pytest.mark.parametrize("name", ["node_modules", "dist", ".venv-public"])
+def test_build_directory_symlink_cannot_bypass_policy(policy, tmp_path, name, strict):
+    target = tmp_path.parent / f"external-{name}"
+    target.mkdir(exist_ok=True)
+    (policy.ROOT / name).symlink_to(target, target_is_directory=True)
+    assert policy.check(strict=strict) == 1
