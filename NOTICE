@@ -29,4 +29,7 @@ No medical scan volumes, private model source, local account information or
 prior private Git history are included. The application capture displays the
 real CT_Electrodes demonstration sample distributed by NiiVue from Seg3DData.
 Preserve LICENSES/Seg3DData.txt for the sample image attribution.
+The additional AI Studio images are original project UI captures from the
+report and the monitor of a completed research training run. They document
+the research deployment; its training runtime is not bundled here.
 Existing source comments and upstream notices have been retained.

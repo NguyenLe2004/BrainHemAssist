@@ -20,6 +20,9 @@ PUBLIC_BINARY = {
     "models/baseline_s.onnx": "92bc39b59ba8edd9f59241baa0b6ebe707690d92257cccc32c5933dbdc282ee5",
     "models/baseline_s.int8.onnx": "e4e81c678bfdd920a7070ffbdca20eb01dc77da2a16478b7012b47819c4f8845",
     "docs/images/clinical-workspace.png": "843cff8fa937c11d519c78114d1cd51386b391ffd832d9f96febb19ba2b7b86f",
+    "docs/images/ai-studio-workspace.png": "8cd5fc37a6c3989b9f51097e94a4a1389c695de23a0c01b5ea279bd987d24ebc",
+    "docs/images/ai-studio-training-loss.png": "e0b86bd87ffcba99d973c0ce21fb379af3c1505ef088fdcc2cbf0f3e29a1e1df",
+    "docs/images/ai-studio-training-dice.png": "a9588a6a22ba33523e843399e39cb24ab40e5df4c80042fc6d8f8b0b7f022fb4",
 }
 PUBLIC_DOCS = {"README.md", "models/README.md", "docs/SETUP.md"}
 

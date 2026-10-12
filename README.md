@@ -30,6 +30,16 @@ The application connects image review, annotation and dataset preparation. Avail
 | **Administration and system status** | Manage viewer, annotator, doctor, model-manager and administrator roles; inspect access audits, service availability and hardware status. |
 | **Guidance and feedback** | Browse the searchable usage guide, ask a read-only assistant with documentation references, and submit feedback to the administrator's inbox. A language-model backend can be configured separately for the assistant. |
 
+### AI Studio and training curves
+
+![Original AI Studio Fine-tune workspace from the project report](docs/images/ai-studio-workspace.png)
+
+| Training and validation loss | Validation Dice history |
+| --- | --- |
+| ![Actual completed research run: training and validation loss](docs/images/ai-studio-training-loss.png) | ![Actual completed research run: epoch validation Dice](docs/images/ai-studio-training-dice.png) |
+
+*Original project captures: the report's Fine-tune workspace and a completed research run's loss/Dice monitor. Monitor Dice is an epoch-level proxy, separate from the full-scan [model benchmarks](models/README.md#segmentation-results). Training shown here used a separately configured research runtime; fine-tuning is unavailable in the bundled public release.*
+
 ### A case through the workspace
 
 1. **Import and inspect.** Add your de-identified CT, find it in the case library, and review its slices and geometry.
